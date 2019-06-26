@@ -31,10 +31,10 @@ public class ChildRecyclerViewAdapter extends RecyclerView.Adapter<ChildRecycler
     public void onBindViewHolder(ChildRecyclerViewHolder viewHolder, int i) {
         viewHolder.childRecyclerTitle.setText(mboxObject.getTitle());
         //Log.d("LOAD", mboxObject.getPageList().get(i))
-        Glide.with(viewHolder.childRecyclerImage.getContext())
-                .load(mboxObject.getPageList().get(i).getThumbnail())
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(viewHolder.childRecyclerImage);
+//        Glide.with(viewHolder.childRecyclerImage.getContext())
+//                .load(mboxObject.getPageList().get(i).getThumbnail())
+//                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+//                .into(viewHolder.childRecyclerImage);
 
     }
 
