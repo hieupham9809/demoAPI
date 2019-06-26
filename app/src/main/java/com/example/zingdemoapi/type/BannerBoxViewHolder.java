@@ -17,11 +17,12 @@ public class BannerBoxViewHolder extends BaseHomeViewHolder {
     private ViewPagerAdapter mPagerAdapter;
     private Context context;
 
-    public void setData(List<BaseClass> list) {
+    @Override
+    public void setData(BoxObject boxObject) {
         if (mPagerAdapter == null) {
             mPagerAdapter = new ViewPagerAdapter(context);
         }
-        mPagerAdapter.setmResources(list);
+        mPagerAdapter.setmResources(boxObject);
         viewPager.setAdapter(mPagerAdapter);
 
     }

@@ -14,6 +14,7 @@ public class VideoViewHolder extends BaseHomeViewHolder {
     protected Context context;
     protected GridViewAdapter gridViewAdapter;
 
+    @Override
     public void setData(BoxObject boxObject) {
         if (gridViewAdapter == null) {
             gridViewAdapter = new GridViewAdapter(context);
@@ -24,7 +25,6 @@ public class VideoViewHolder extends BaseHomeViewHolder {
         gridView.setExpanded(true);
     }
 
-
     public VideoViewHolder(@NonNull View itemView, Context mContext) {
         super(itemView);
 //        recyclerView = itemView.findViewById(R.id.child_recycler_view);
@@ -34,4 +34,5 @@ public class VideoViewHolder extends BaseHomeViewHolder {
         gridView = itemView.findViewById(R.id.grid_view);
 
     }
+
 }

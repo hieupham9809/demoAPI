@@ -55,14 +55,15 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
         switch (type) {
             case Type.BANNER:
                 BannerBoxViewHolder bannerBoxViewHolder = ((BannerBoxViewHolder) holder);
-
-                bannerBoxViewHolder.setData(homedata.get(position).getPageList());
+                bannerBoxViewHolder.setData(homedata.get(position));
                 break;
 
             case Type.PROGRAM:
+                ProgramGridViewHolder programGridViewHolder = (ProgramGridViewHolder)holder;
+                programGridViewHolder.setData(homedata.get(position));
+                break;
             case Type.VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
-
                 videoViewHolder.setData(homedata.get(position));
                 break;
 
