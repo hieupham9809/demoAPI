@@ -23,19 +23,19 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
 
-
-    public List<BaseClass> getmResources() {
-        return mResources;
-    }
-
     public void setmResources(List<BaseClass> mResources) {
         this.mResources = mResources;
     }
 
     @Override
     public int getCount() {
-        return mResources.size();
+        if (mResources != null) {
+            return mResources.size();
+        } else {
+            return 0;
+        }
     }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.viewpager_item, container, false);

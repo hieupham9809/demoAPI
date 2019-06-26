@@ -13,27 +13,27 @@ public class ProgramGridViewAdapter extends GridViewAdapter {
     public ProgramGridViewAdapter(Context context) {
         super(context);
     }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         MyViewHolder myViewHolder;
-        if (convertView == null){
+        if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.child_recycler_row, parent, false);
             myViewHolder = new MyViewHolder(convertView);
             convertView.setTag(myViewHolder);
-        }else{
-            myViewHolder = (MyViewHolder)convertView.getTag();
+        } else {
+            myViewHolder = (MyViewHolder) convertView.getTag();
         }
-        //Log.d("IMAGE", mBoxObject.getPageList().get(position).getThumbnail());
-        myViewHolder.child_gridview_title.setText(mBoxObject.getTitle());
+        myViewHolder.childGridViewTitle.setText(mBoxObject.getTitle());
         Glide.with(context)
                 .load(mBoxObject.getPageList().get(position).getThumbnail())
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(myViewHolder.child_gridview_image);
-        convertView.setOnClickListener(new View.OnClickListener(){
+                .into(myViewHolder.childGridviewImage);
+        convertView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "ID: " + mBoxObject.getPageList().get(position).getId(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "ID: " + mBoxObject.getPageList().get(position).getId(), Toast.LENGTH_SHORT).show();
             }
         });
         return convertView;

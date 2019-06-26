@@ -16,11 +16,7 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
     private Home homedata;
 
-    private VideoViewHolder videoViewHolder;
-    private BannerBoxViewHolder bannerBoxViewHolder;
-
-
-    Context context; // Activity/Fragment 's context
+    private Context context; // Activity/Fragment 's context
 
     public DataAdapter(Home home, Context mContext) {
         homedata = home;
@@ -48,8 +44,8 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-
         return homedata.get(position).getType();
+
     }
 
     @Override
@@ -58,14 +54,14 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
         switch (type) {
             case Type.BANNER:
-                bannerBoxViewHolder = ((BannerBoxViewHolder) holder);
+                BannerBoxViewHolder bannerBoxViewHolder = ((BannerBoxViewHolder) holder);
 
                 bannerBoxViewHolder.setData(homedata.get(position).getPageList());
                 break;
 
             case Type.PROGRAM:
             case Type.VIDEO:
-                videoViewHolder = (VideoViewHolder) holder;
+                VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
 
                 videoViewHolder.setData(homedata.get(position));
                 break;
@@ -79,8 +75,11 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
     @Override
     public int getItemCount() {
-
-        return homedata.size();
+        if (homedata != null) {
+            return homedata.size();
+        } else {
+            return 0;
+        }
     }
 
 

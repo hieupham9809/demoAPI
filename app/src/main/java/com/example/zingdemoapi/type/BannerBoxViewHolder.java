@@ -14,8 +14,8 @@ import java.util.List;
 public class BannerBoxViewHolder extends BaseHomeViewHolder {
 
     private ViewPager viewPager;
-    ViewPagerAdapter mPagerAdapter;
-    Context context;
+    private ViewPagerAdapter mPagerAdapter;
+    private Context context;
 
     public void setData(List<BaseClass> list) {
         if (mPagerAdapter == null) {
