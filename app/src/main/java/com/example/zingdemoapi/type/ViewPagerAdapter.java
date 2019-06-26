@@ -16,21 +16,21 @@ import java.util.List;
 
 public class ViewPagerAdapter extends PagerAdapter {
     private Context context;
-    private BoxObject mResources;
+    private List<Banner> mResources;
 
     public ViewPagerAdapter(Context context) {
         this.context = context;
     }
 
 
-    public void setmResources(BoxObject mResources) {
+    public void setmResources(List<Banner> mResources) {
         this.mResources = mResources;
     }
 
     @Override
     public int getCount() {
         if (mResources != null) {
-            return mResources.getPageList().size();
+            return mResources.size();
         } else {
             return 0;
         }
@@ -42,7 +42,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
         Glide.with(context)
-                .load(mResources.getPageList().get(position).getThumbnail())
+                .load(mResources.get(position).getThumbnail())
                 //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
 

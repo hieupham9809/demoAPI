@@ -6,23 +6,25 @@ import android.view.View;
 
 import com.example.zingdemoapi.R;
 
-public class ProgramGridViewHolder extends BaseHomeViewHolder {
+import java.util.List;
+
+public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
     private ExpandableHeightGridView gridView;
     private Context context;
-    private GridViewAdapter gridViewAdapter;
+    private ProgramGridViewAdapter programGridViewAdapter;
     ProgramGridViewHolder(@NonNull View itemView, Context mContext) {
         super(itemView);
         context = mContext;
         gridView = itemView.findViewById(R.id.grid_view);
     }
     @Override
-    public void setData(BoxObject boxObject){
-        if (gridViewAdapter == null){
-            gridViewAdapter = new ProgramGridViewAdapter(context);
+    public void setData(List<Program> list){
+        if (programGridViewAdapter == null){
+            programGridViewAdapter = new ProgramGridViewAdapter(context);
 
         }
-        gridViewAdapter.setmResources(boxObject);
-        gridView.setAdapter(gridViewAdapter);
+        programGridViewAdapter.setmResources(list);
+        gridView.setAdapter(programGridViewAdapter);
         gridView.setExpanded(true);
     }
 }

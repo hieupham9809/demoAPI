@@ -13,8 +13,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.zingdemoapi.R;
 
+import java.util.List;
+
 public class GridViewAdapter extends BaseAdapter {
-    protected BoxObject mBoxObject;
+    protected List<Video> list;
     protected Context context;
     protected LayoutInflater mLayoutInflater;
 
@@ -22,15 +24,15 @@ public class GridViewAdapter extends BaseAdapter {
         this.context = mContext;
     }
 
-    public void setmResources(BoxObject boxObject) {
-        mBoxObject = boxObject;
+    public void setmResources(List<Video> mList) {
+        list = mList;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        if (mBoxObject != null) {
-            return mBoxObject.getPageList().size();
+        if (list != null) {
+            return list.size();
         } else {
             return 0;
         }
@@ -38,12 +40,12 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mBoxObject.getPageList().get(position);
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return mBoxObject.getPageList().get(position).getId();
+        return list.get(position).getId();
     }
 
     @Override
@@ -57,9 +59,9 @@ public class GridViewAdapter extends BaseAdapter {
             myViewHolder = (MyViewHolder) convertView.getTag();
         }
 
-        myViewHolder.childGridViewTitle.setText(mBoxObject.getTitle());
+        //myViewHolder.childGridViewTitle.setText(mBoxObject.getTitle());
         Glide.with(context)
-                .load(mBoxObject.getPageList().get(position).getThumbnail())
+                .load(list.get(position).getThumbnail())
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(myViewHolder.childGridviewImage);
 

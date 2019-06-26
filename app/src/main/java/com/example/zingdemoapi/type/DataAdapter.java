@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.zingdemoapi.R;
 
+import java.util.List;
+
 
 public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
@@ -54,17 +56,18 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
         switch (type) {
             case Type.BANNER:
+                List<Banner> banners = homedata.get(position).getPageList();
                 BannerBoxViewHolder bannerBoxViewHolder = ((BannerBoxViewHolder) holder);
-                bannerBoxViewHolder.setData(homedata.get(position));
+                bannerBoxViewHolder.setData(banners);
                 break;
 
             case Type.PROGRAM:
                 ProgramGridViewHolder programGridViewHolder = (ProgramGridViewHolder)holder;
-                programGridViewHolder.setData(homedata.get(position));
+                programGridViewHolder.setData(homedata.get(position).<Program>getPageList());
                 break;
             case Type.VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
-                videoViewHolder.setData(homedata.get(position));
+                videoViewHolder.setData(homedata.get(position).<Video>getPageList());
                 break;
 
             default:

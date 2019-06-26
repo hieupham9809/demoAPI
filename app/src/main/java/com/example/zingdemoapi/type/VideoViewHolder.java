@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.example.zingdemoapi.R;
 
-public class VideoViewHolder extends BaseHomeViewHolder {
+import java.util.List;
+
+public class VideoViewHolder extends BaseHomeViewHolder<Video> {
 
     protected RecyclerView recyclerView;
     protected ExpandableHeightGridView gridView;
@@ -15,12 +17,12 @@ public class VideoViewHolder extends BaseHomeViewHolder {
     protected GridViewAdapter gridViewAdapter;
 
     @Override
-    public void setData(BoxObject boxObject) {
+    public void setData(List<Video> list) {
         if (gridViewAdapter == null) {
             gridViewAdapter = new GridViewAdapter(context);
 
         }
-        gridViewAdapter.setmResources(boxObject);
+        gridViewAdapter.setmResources(list);
         gridView.setAdapter(gridViewAdapter);
         gridView.setExpanded(true);
     }

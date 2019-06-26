@@ -11,18 +11,18 @@ import com.example.zingdemoapi.R;
 
 import java.util.List;
 
-public class BannerBoxViewHolder extends BaseHomeViewHolder {
+public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
 
     private ViewPager viewPager;
     private ViewPagerAdapter mPagerAdapter;
     private Context context;
 
     @Override
-    public void setData(BoxObject boxObject) {
+    public void setData(List<Banner> list) {
         if (mPagerAdapter == null) {
             mPagerAdapter = new ViewPagerAdapter(context);
         }
-        mPagerAdapter.setmResources(boxObject);
+        mPagerAdapter.setmResources(list);
         viewPager.setAdapter(mPagerAdapter);
 
     }
