@@ -3,7 +3,7 @@ package com.example.zingdemoapi.type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class  BoxObject<T extends BaseClass> {
+public class  BoxObject {
     protected List pageList = new ArrayList<>();
 
     protected Integer type;
@@ -78,11 +78,11 @@ public class  BoxObject<T extends BaseClass> {
         this.placeholder = placeholder;
     }
 
-    public List<T> getPageList() {
+    public <T extends BaseClass> List<T> getPageList() {
         return pageList;
     }
 
-    public void setPages(List<T> baseClasses) {
+    public <T extends BaseClass> void setPages(List<T> baseClasses) {
         this.pageList = baseClasses;
     }
 

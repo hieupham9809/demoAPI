@@ -63,11 +63,11 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
             case Type.PROGRAM:
                 ProgramGridViewHolder programGridViewHolder = (ProgramGridViewHolder)holder;
-                programGridViewHolder.setData(homedata.get(position).getPageList());
+                programGridViewHolder.setData(homedata.get(position).<Program>getPageList());
                 break;
             case Type.VIDEO:
                 VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
-                videoViewHolder.setData(homedata.get(position).getPageList());
+                videoViewHolder.setData(homedata.get(position).<Video>getPageList());
                 break;
 
             default:

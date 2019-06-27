@@ -31,7 +31,7 @@ public class HomeAdapter extends TypeAdapter<Home> {
                     if (in.nextName().equals("home")){
                         in.beginArray();
                         while (in.hasNext()){
-                            List<BaseClass> pageList = new ArrayList<>();
+                            List pageList = new ArrayList<>();
                             BoxObject boxObject = new BoxObject();
                             boolean flag = true;
                             in.beginObject();
