@@ -9,7 +9,7 @@
     <!--&gt;-->
 
 <!--</GridView>-->
-<com.example.zingdemoapi.type.ExpandableHeightGridView
+<com.example.zingdemoapi.ui.view.ExpandableHeightGridView
     android:id="@+id/grid_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ZingDemoApi</string>
+    <string name="name">Tên Phim</string>
+    <string name="genres">Thể loại:</string>
+    <string name="t_n">Tên</string>
+    <string name="description">Mô tả</string>
+    <string name="link">Link</string>
+    <string name="ink">Link:</string>
+    <string name="format">Định dạng:</string>
+    <string name="listen">Lượt xem:</string>
+    <string name="comment">Bình luận:</string>
+    <string name="rating">Đánh giá:</string>
+    <string name="release_date">Thời gian ra mắt:</string>
+    <string name="artist">Các diễn viên:</string>
 </resources>
