@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ArtistRecyclerViewAdapter;
+import com.example.zingdemoapi.adapter.SeriesRecyclerViewAdapter;
 import com.example.zingdemoapi.datamodel.Genre;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
 import com.example.zingdemoapi.ui.view.ExpandableHeightGridView;
@@ -32,7 +33,9 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
     private TextView tvReleaseDate;
 
     private RecyclerView artistRecyclerView;
+    private RecyclerView serieRecyclerView;
     private ArtistRecyclerViewAdapter artistRecyclerViewAdapter;
+    private SeriesRecyclerViewAdapter seriesRecyclerViewAdapter;
 
     public ProgramInfoViewHolder(@NonNull View itemView, Context mContext) {
         super(itemView);
@@ -49,13 +52,15 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
         tvReleaseDate = itemView.findViewById(R.id.tv_release_date);
 
         artistRecyclerView = itemView.findViewById(R.id.artist_recycler_view);
-
+        serieRecyclerView = itemView.findViewById(R.id.series_recycler_view);
     }
     public void setData(ProgramInfo mProgramInfo){
         programInfo = mProgramInfo;
         tvName.setText(programInfo.getName());
         Glide.with(context)
                 .load(programInfo.getBanner())
+                //.override(bannerImage.getLayoutParams().width, bannerImage.getLayoutParams().width * 9 / 16)
+                //.override(150, 150)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(bannerImage);
         tvDescription.setText(programInfo.getDescription());
@@ -70,6 +75,11 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
         artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), context);
         artistRecyclerView.setLayoutManager(new LinearLayoutManager(context ,LinearLayoutManager.HORIZONTAL, false));
         artistRecyclerView.setAdapter(artistRecyclerViewAdapter);
+
+        seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), context);
+        serieRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        serieRecyclerView.setAdapter(seriesRecyclerViewAdapter);
+
     }
     private String getGenre(ProgramInfo programInfo){
         String genre = "";

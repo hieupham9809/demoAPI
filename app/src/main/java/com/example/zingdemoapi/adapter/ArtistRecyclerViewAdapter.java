@@ -29,7 +29,7 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
     @Override
     public ArtistViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.artist_recycler_item, viewGroup, false );
-        return new ArtistViewHolder(view, context);
+        return new ArtistViewHolder(view);
     }
 
 
@@ -58,10 +58,10 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
         private TextView artistName;
         private TextView artistDOB;
 
-        private Context context;
-        ArtistViewHolder (View view, Context mContext){
+        //private Context context;
+        ArtistViewHolder (View view){
             super(view);
-            context = mContext;
+            //context = mContext;
             artistImage = view.findViewById(R.id.iv_artist_image);
             artistName = view.findViewById(R.id.tv_artist_name);
             artistDOB  = view.findViewById(R.id.tv_artist_DOB);

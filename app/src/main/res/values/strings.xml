@@ -12,4 +12,5 @@
     <string name="rating">Đánh giá:</string>
     <string name="release_date">Thời gian ra mắt:</string>
     <string name="artist">Các diễn viên:</string>
+    <string name="series">Series</string>
 </resources>
