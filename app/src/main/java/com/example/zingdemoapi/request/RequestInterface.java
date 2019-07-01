@@ -12,5 +12,5 @@ public interface RequestInterface {
     Observable<Home> register();
 
     @GET("3.1/program/info?api_key=7d3343b073f9fb9ec75e53335111dcc1&os=android&app_version=140033031&session_key=&ctime=1561515525790&scrsize=210x210&api_sig=aabb3a00ade4bd64a06c2e8a83d4512c&ignoresig=true")
-    Observable<ProgramInfo> getProgramInfo(@Query("program_id") Integer id);
+    Observable<ProgramInfo> getProgramInfo(@Query("program_id") String id);
 }

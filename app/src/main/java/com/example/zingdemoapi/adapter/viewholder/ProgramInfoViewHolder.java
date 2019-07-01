@@ -64,13 +64,13 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(bannerImage);
         tvDescription.setText(programInfo.getDescription());
-        tvGenre.setText(tvGenre.getText() + getGenre(programInfo));
-        tvLink.setText(tvLink.getText() + programInfo.getUrl());
-        tvFormat.setText(tvFormat.getText() + programInfo.getFormat());
-        tvListen.setText(tvListen.getText() + programInfo.getListen().toString());
-        tvComment.setText(tvComment.getText() + programInfo.getComment().toString());
-        tvRating.setText(tvRating.getText() + programInfo.getRating().toString());
-        tvReleaseDate.setText(tvReleaseDate.getText() + programInfo.getReleaseDate());
+        tvGenre.setText(tvGenre.getText() +"    "+ getGenre(programInfo));
+        tvLink.setText(tvLink.getText() +"    "+ programInfo.getUrl());
+        tvFormat.setText(tvFormat.getText() +"    "+ programInfo.getFormat());
+        tvListen.setText(tvListen.getText() +"    "+ programInfo.getListen().toString());
+        tvComment.setText(tvComment.getText() +"    "+ programInfo.getComment().toString());
+        tvRating.setText(tvRating.getText() +"    "+ programInfo.getRating().toString());
+        tvReleaseDate.setText(tvReleaseDate.getText()+"    " + programInfo.getReleaseDate());
 
         artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), context);
         artistRecyclerView.setLayoutManager(new LinearLayoutManager(context ,LinearLayoutManager.HORIZONTAL, false));

@@ -10,23 +10,19 @@ import android.widget.Toast;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
 import com.example.zingdemoapi.datamodel.Home;
+import com.example.zingdemoapi.request.RestApi;
 import com.example.zingdemoapi.typeadapter.HomeAdapter;
-import com.example.zingdemoapi.request.RequestInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    final public String BASE = "http://dev.api.tv.zing.vn/";
     private Home home;
     private CompositeDisposable mCompositeDisposable;
     private DataAdapter mAdapter;
@@ -56,13 +52,8 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
     private void loadJSON(){
-        RequestInterface requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(getGSONConvertFactory()))
-                .build().create(RequestInterface.class);
 
-        Disposable disposable = requestInterface.register()
+        Disposable disposable = RestApi.getInstance().getHome()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Home>() {

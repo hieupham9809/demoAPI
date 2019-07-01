@@ -10,22 +10,15 @@ import android.widget.Toast;
 
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ProgramInfoDataAdapter;
-import com.example.zingdemoapi.datamodel.Home;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
-import com.example.zingdemoapi.request.RequestInterface;
-import com.example.zingdemoapi.typeadapter.ProgramAdapter;
-import com.example.zingdemoapi.typeadapter.ProgramInfoAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.example.zingdemoapi.request.RestApi;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class ProgramInfoActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -41,7 +34,7 @@ public class ProgramInfoActivity extends AppCompatActivity {
         int id = intent.getIntExtra("IDPROGRAM", 0);
         initRecyclerView();
 
-        loadJSON(id);
+        loadJSON(Integer.toString(id));
     }
     private void initRecyclerView(){
         mRecyclerView = findViewById(R.id.program_info_recycler_view);
@@ -49,19 +42,10 @@ public class ProgramInfoActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
     }
-    private Gson getGSONConvertFactory(){
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(ProgramInfo.class, new ProgramInfoAdapter());
-        return builder.create();
-    }
-    private void loadJSON(int id){
-        RequestInterface requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(getGSONConvertFactory()))
-                .build().create(RequestInterface.class);
 
-        Disposable disposable = requestInterface.getProgramInfo(id)
+    private void loadJSON(String id){
+
+        Disposable disposable = RestApi.getInstance().getProgramInfo(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<ProgramInfo>() {
