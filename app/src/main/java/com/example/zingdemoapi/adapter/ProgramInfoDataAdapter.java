@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.viewholder.ProgramInfoViewHolder;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
@@ -16,15 +17,18 @@ public class ProgramInfoDataAdapter extends RecyclerView.Adapter<ProgramInfoView
 
     private Context context;
 
-    public ProgramInfoDataAdapter(ProgramInfo mProgramInfo, Context mContext){
+    private RequestManager requestManager;
+
+    public ProgramInfoDataAdapter(ProgramInfo mProgramInfo, Context mContext, RequestManager mRequestManager){
         programInfo = mProgramInfo;
         context = mContext;
+        requestManager = mRequestManager;
     }
     @NonNull
     @Override
     public ProgramInfoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.program_info_layout, viewGroup, false);
-        return new ProgramInfoViewHolder(view, context);
+        return new ProgramInfoViewHolder(view, context, requestManager);
     }
 
     @Override

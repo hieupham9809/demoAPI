@@ -9,21 +9,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Artist;
+import com.example.zingdemoapi.request.GlideRequest;
 
 import java.util.List;
 
 public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecyclerViewAdapter.ArtistViewHolder> {
+    private RequestManager requestManager;
+
     private List<Artist> artistList;
 
     private Context context;
 
-    public ArtistRecyclerViewAdapter(List<Artist> mArtistList, Context mContext){
+    public ArtistRecyclerViewAdapter(List<Artist> mArtistList, Context mContext, RequestManager mRequestManager){
         artistList = mArtistList;
         context = mContext;
+        requestManager = mRequestManager;
     }
     @NonNull
     @Override
@@ -38,10 +41,7 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
     public void onBindViewHolder(@NonNull ArtistViewHolder artistViewHolder, int i) {
         artistViewHolder.artistDOB.setText(artistList.get(i).getDob());
         artistViewHolder.artistName.setText(artistList.get(i).getName());
-        Glide.with(context)
-                .load(artistList.get(i).getAvatar())
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(artistViewHolder.artistImage);
+        GlideRequest.getInstance().loadImage(requestManager, artistList.get(i).getAvatar(), artistViewHolder.artistImage);
     }
 
     @Override

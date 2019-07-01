@@ -15,16 +15,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestApi {
     final private String BASE = "http://dev.api.tv.zing.vn/";
     private static RestApi instance;
+    private RequestInterface requestInterface;
 
     private RestApi() {
-
+        requestInterface = new Retrofit.Builder()
+                .baseUrl(BASE)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(getGSONConvertFactory()))
+                .build().create(RequestInterface.class);
     }
-
-    private RequestInterface requestInterface = new Retrofit.Builder()
-            .baseUrl(BASE)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(getGSONConvertFactory()))
-            .build().create(RequestInterface.class);
 
     private Gson getGSONConvertFactory() {
         GsonBuilder builder = new GsonBuilder();
@@ -40,7 +39,6 @@ public class RestApi {
     public Observable<ProgramInfo> getProgramInfo(String programId) {
         return requestInterface.getProgramInfo(programId);
     }
-
 
     public static RestApi getInstance() {
         if (instance == null) {

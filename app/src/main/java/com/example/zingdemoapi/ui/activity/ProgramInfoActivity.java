@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ProgramInfoDataAdapter;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
@@ -18,19 +20,21 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class ProgramInfoActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ProgramInfoDataAdapter programInfoDataAdapter;
     private CompositeDisposable mCompositeDisposable;
+    private RequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_info);
         mCompositeDisposable = new CompositeDisposable();
+        requestManager = Glide.with(this);
         Intent intent = getIntent();
         int id = intent.getIntExtra("IDPROGRAM", 0);
+
         initRecyclerView();
 
         loadJSON(Integer.toString(id));
@@ -62,7 +66,7 @@ public class ProgramInfoActivity extends AppCompatActivity {
     }
 
     private void handleResponse(ProgramInfo programInfo) {
-        programInfoDataAdapter = new ProgramInfoDataAdapter(programInfo, this);
+        programInfoDataAdapter = new ProgramInfoDataAdapter(programInfo, this, requestManager);
         mRecyclerView.setAdapter(programInfoDataAdapter);
     }
 

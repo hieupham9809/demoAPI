@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ArtistRecyclerViewAdapter;
 import com.example.zingdemoapi.adapter.SeriesRecyclerViewAdapter;
 import com.example.zingdemoapi.datamodel.Genre;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
+import com.example.zingdemoapi.request.GlideRequest;
 
 public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
+    RequestManager requestManager;
+
     private ProgramInfo programInfo;
     private Context context;
 
@@ -34,8 +36,9 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
     private RecyclerView artistRecyclerView;
     private RecyclerView serieRecyclerView;
 
-    public ProgramInfoViewHolder(@NonNull View itemView, Context mContext) {
+    public ProgramInfoViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager) {
         super(itemView);
+        requestManager = mRequestManager;
         context = mContext;
         tvName = itemView.findViewById(R.id.tv_name);
         bannerImage = itemView.findViewById(R.id.banner_image);
@@ -55,11 +58,8 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
     public void setData(ProgramInfo mProgramInfo) {
         programInfo = mProgramInfo;
         tvName.setText(programInfo.getName());
-        Glide.with(context)
-                .load(programInfo.getBanner())
 
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(bannerImage);
+        GlideRequest.getInstance().loadImage(requestManager, programInfo.getBanner(), bannerImage);
         tvDescription.setText(programInfo.getDescription());
         tvGenre.setText(String.format("%s    %s", tvGenre.getText(), getGenre(programInfo)));
         tvLink.setText(String.format("%s    %s", tvLink.getText(), programInfo.getUrl()));
@@ -69,11 +69,11 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
         tvRating.setText(String.format("%s    %s", tvRating.getText(), programInfo.getRating().toString()));
         tvReleaseDate.setText(String.format("%s    %s", tvReleaseDate.getText(), programInfo.getReleaseDate()));
 
-        ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), context);
+        ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), context, requestManager);
         artistRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         artistRecyclerView.setAdapter(artistRecyclerViewAdapter);
 
-        SeriesRecyclerViewAdapter seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), context);
+        SeriesRecyclerViewAdapter seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), context, requestManager);
         serieRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         serieRecyclerView.setAdapter(seriesRecyclerViewAdapter);
 

@@ -7,22 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Banner;
+import com.example.zingdemoapi.request.GlideRequest;
 
 import java.util.List;
 
 public class ViewPagerAdapter extends PagerAdapter {
     private Context context;
     private List<Banner> mResources;
+    RequestManager requestManager;
 
-    public ViewPagerAdapter(Context context) {
+    public ViewPagerAdapter(Context context, List<Banner> resources, RequestManager mRequestManager) {
+        mResources = resources;
+        requestManager = mRequestManager;
         this.context = context;
-    }
-
-    public void setmResources(List<Banner> mResources) {
-        this.mResources = mResources;
     }
 
     @Override
@@ -39,10 +39,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         View itemView = LayoutInflater.from(context).inflate(R.layout.viewpager_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
-        Glide.with(context)
-                .load(mResources.get(position).getThumbnail())
-                //.diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(imageView);
+        GlideRequest.getInstance().loadImage(requestManager, mResources.get(position).getThumbnail(), imageView);
 
         container.addView(itemView);
 

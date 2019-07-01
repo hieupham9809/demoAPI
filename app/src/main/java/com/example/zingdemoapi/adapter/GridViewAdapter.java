@@ -8,10 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Video;
+import com.example.zingdemoapi.request.GlideRequest;
 
 import java.util.List;
 
@@ -19,9 +19,11 @@ public class GridViewAdapter extends BaseAdapter {
     protected List<Video> list;
     protected Context context;
     protected LayoutInflater mLayoutInflater;
+    private RequestManager requestManager;
 
-    public GridViewAdapter(Context mContext) {
+    public GridViewAdapter(Context mContext, RequestManager mRequestManager) {
         this.context = mContext;
+        requestManager = mRequestManager;
     }
 
     public void setmResources(List<Video> mList) {
@@ -50,30 +52,26 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MyViewHolder myViewHolder;
+        GridViewItemViewHolder gridViewItemViewHolder;
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.child_recycler_row, parent, false);
-            myViewHolder = new MyViewHolder(convertView);
-            convertView.setTag(myViewHolder);
+            gridViewItemViewHolder = new GridViewItemViewHolder(convertView);
+            convertView.setTag(gridViewItemViewHolder);
         } else {
-            myViewHolder = (MyViewHolder) convertView.getTag();
+            gridViewItemViewHolder = (GridViewItemViewHolder) convertView.getTag();
         }
 
-        //myViewHolder.childGridViewTitle.setText(mBoxObject.getTitle());
-        Glide.with(context)
-                .load(list.get(position).getThumbnail())
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(myViewHolder.childGridviewImage);
+        GlideRequest.getInstance().loadImage(requestManager, list.get(position).getThumbnail(),gridViewItemViewHolder.childGridviewImage);
 
         return convertView;
 
     }
 
-    protected class MyViewHolder {
+    protected class GridViewItemViewHolder {
         TextView childGridViewTitle;
         ImageView childGridviewImage;
 
-        MyViewHolder(View view) {
+        GridViewItemViewHolder(View view) {
             childGridViewTitle = view.findViewById(R.id.child_recycler_title);
             childGridviewImage = view.findViewById(R.id.child_recycler_image);
         }

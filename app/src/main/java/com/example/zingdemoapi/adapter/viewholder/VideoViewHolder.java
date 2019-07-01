@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.GridViewAdapter;
 import com.example.zingdemoapi.datamodel.Video;
@@ -22,7 +23,7 @@ public class VideoViewHolder extends BaseHomeViewHolder<Video> {
     @Override
     public void setData(List<Video> list) {
         if (gridViewAdapter == null) {
-            gridViewAdapter = new GridViewAdapter(context);
+            gridViewAdapter = new GridViewAdapter(context, requestManager);
 
         }
         gridViewAdapter.setmResources(list);
@@ -30,11 +31,9 @@ public class VideoViewHolder extends BaseHomeViewHolder<Video> {
         gridView.setExpanded(true);
     }
 
-    public VideoViewHolder(@NonNull View itemView, Context mContext) {
-        super(itemView);
-//        recyclerView = itemView.findViewById(R.id.child_recycler_view);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(recyclerView.getContext(), 2);
-//        recyclerView.setLayoutManager(gridLayoutManager);
+    public VideoViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager) {
+        super(itemView,mRequestManager);
+
         this.context = mContext;
         gridView = itemView.findViewById(R.id.grid_view);
 

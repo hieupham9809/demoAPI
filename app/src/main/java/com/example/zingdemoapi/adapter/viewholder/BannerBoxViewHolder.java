@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ViewPagerAdapter;
 import com.example.zingdemoapi.datamodel.Banner;
@@ -19,18 +20,19 @@ public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
     private ViewPagerAdapter mPagerAdapter;
     private Context context;
 
+
     @Override
     public void setData(List<Banner> list) {
         if (mPagerAdapter == null) {
-            mPagerAdapter = new ViewPagerAdapter(context);
+            mPagerAdapter = new ViewPagerAdapter(context, list, requestManager);
         }
-        mPagerAdapter.setmResources(list);
+
         viewPager.setAdapter(mPagerAdapter);
 
     }
 
-    public BannerBoxViewHolder(@NonNull View itemView, Context mContext) {
-        super(itemView);
+    public BannerBoxViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager) {
+        super(itemView, mRequestManager);
         context = mContext;
 
         viewPager = itemView.findViewById(R.id.viewPager);

@@ -9,19 +9,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Serie;
+import com.example.zingdemoapi.request.GlideRequest;
 
 import java.util.List;
 
 public class SeriesRecyclerViewAdapter extends RecyclerView.Adapter<SeriesRecyclerViewAdapter.SeriesItemViewHolder> {
     List<Serie> serieList;
     Context context;
-    public SeriesRecyclerViewAdapter(List<Serie> list, Context mContext){
+    RequestManager requestManager;
+    public SeriesRecyclerViewAdapter(List<Serie> list, Context mContext, RequestManager mRequestManager){
         serieList = list;
         context = mContext;
+        requestManager = mRequestManager;
     }
     @NonNull
     @Override
@@ -34,10 +36,8 @@ public class SeriesRecyclerViewAdapter extends RecyclerView.Adapter<SeriesRecycl
     public void onBindViewHolder(@NonNull SeriesItemViewHolder seriesItemViewHolder, int i) {
 
         seriesItemViewHolder.tvSerieName.setText(serieList.get(i).getName());
-        Glide.with(context)
-                .load(serieList.get(i).getThumbnail())
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(seriesItemViewHolder.ivSerieName);
+
+        GlideRequest.getInstance().loadImage(requestManager, serieList.get(i).getThumbnail(), seriesItemViewHolder.ivSerieName);
     }
 
     @Override

@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Program;
-import com.example.zingdemoapi.ui.activity.MainActivity;
+import com.example.zingdemoapi.request.GlideRequest;
 import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
 import java.util.List;
@@ -23,8 +21,10 @@ public class ProgramGridViewAdapter extends BaseAdapter {
     private List<Program> list;
     private Context context;
     private LayoutInflater mLayoutInflater;
-    public ProgramGridViewAdapter(Context mContext) {
+    private RequestManager requestManager;
+    public ProgramGridViewAdapter(Context mContext, RequestManager mRequestManager) {
         this.context = mContext;
+        requestManager = mRequestManager;
     }
     public void setmResources(List<Program> mList) {
         list = mList;
@@ -59,11 +59,8 @@ public class ProgramGridViewAdapter extends BaseAdapter {
         } else {
             titleImageViewHolder = (TitleImageViewHolder) convertView.getTag();
         }
-        //myViewHolder.childGridViewTitle.setText(mBoxObject.getTitle());
-        Glide.with(context)
-                .load(list.get(position).getThumbnail())
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(titleImageViewHolder.childGridviewImage);
+
+        GlideRequest.getInstance().loadImage(requestManager, list.get(position).getThumbnail(), titleImageViewHolder.childGridviewImage);
 
         convertView.setOnClickListener(new View.OnClickListener() {
 

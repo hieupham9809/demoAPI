@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Banner;
 import com.example.zingdemoapi.datamodel.Home;
@@ -26,12 +27,13 @@ import java.util.List;
 public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
     private Home homedata;
-
+    private RequestManager requestManager;
     private Context context; // Activity/Fragment 's context
 
-    public DataAdapter(Home home, Context mContext) {
+    public DataAdapter(Home home, Context mContext, RequestManager mRequestManager) {
         homedata = home;
         context = mContext;
+        requestManager = mRequestManager;
     }
 
 
@@ -41,13 +43,13 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
         if (viewType == Type.BANNER) {
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row, parent, false);
-            return new BannerBoxViewHolder(view, context);
+            return new BannerBoxViewHolder(view, context, requestManager);
         } else if (viewType == Type.PROGRAM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_row, parent, false);
-            return new ProgramGridViewHolder(view, context);
+            return new ProgramGridViewHolder(view, context, requestManager);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_row, parent, false);
-            return new VideoViewHolder(view, context);
+            return new VideoViewHolder(view, context, requestManager);
         }
 
     }

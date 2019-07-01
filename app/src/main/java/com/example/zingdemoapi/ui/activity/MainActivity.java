@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
 import com.example.zingdemoapi.datamodel.Home;
@@ -23,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable mCompositeDisposable;
     private DataAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private RequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCompositeDisposable = new CompositeDisposable();
+        requestManager = Glide.with(this);
         initRecyclerView();
         loadJSON();
     }
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Home home) {
-        mAdapter = new DataAdapter(home, this);
+        mAdapter = new DataAdapter(home, this, requestManager);
         mRecyclerView.setAdapter(mAdapter);
         Log.d("MovieDB", "GET RESPONSE" + home.size());
 
