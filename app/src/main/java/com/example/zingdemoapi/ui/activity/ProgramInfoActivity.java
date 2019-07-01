@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ProgramInfoDataAdapter;
@@ -24,7 +23,7 @@ public class ProgramInfoActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ProgramInfoDataAdapter programInfoDataAdapter;
     private CompositeDisposable mCompositeDisposable;
-    final public String BASE = "http://dev.api.tv.zing.vn/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,25 +35,22 @@ public class ProgramInfoActivity extends AppCompatActivity {
 
         loadJSON(Integer.toString(id));
     }
-    private void initRecyclerView(){
+
+    private void initRecyclerView() {
         mRecyclerView = findViewById(R.id.program_info_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void loadJSON(String id){
-
+    private void loadJSON(String id) {
         Disposable disposable = RestApi.getInstance().getProgramInfo(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<ProgramInfo>() {
                     @Override
                     public void accept(ProgramInfo response) throws Exception {
-
                         ProgramInfoActivity.this.handleResponse(response);
-
-
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -64,17 +60,19 @@ public class ProgramInfoActivity extends AppCompatActivity {
                 });
         mCompositeDisposable.add(disposable);
     }
-    private void handleResponse(ProgramInfo programInfo){
-        programInfoDataAdapter = new ProgramInfoDataAdapter(programInfo, this );
+
+    private void handleResponse(ProgramInfo programInfo) {
+        programInfoDataAdapter = new ProgramInfoDataAdapter(programInfo, this);
         mRecyclerView.setAdapter(programInfoDataAdapter);
     }
 
-    private void handleError(Throwable error){
+    private void handleError(Throwable error) {
         //Toast.makeText(this, "Error" + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         Log.d("PROGRAMINFO", "Error" + error.getLocalizedMessage());
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         mCompositeDisposable.clear();
     }

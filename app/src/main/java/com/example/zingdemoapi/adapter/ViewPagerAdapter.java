@@ -21,7 +21,6 @@ public class ViewPagerAdapter extends PagerAdapter {
         this.context = context;
     }
 
-
     public void setmResources(List<Banner> mResources) {
         this.mResources = mResources;
     }

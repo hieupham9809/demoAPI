@@ -11,9 +11,6 @@ import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
 import com.example.zingdemoapi.datamodel.Home;
 import com.example.zingdemoapi.request.RestApi;
-import com.example.zingdemoapi.typeadapter.HomeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -23,11 +20,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Home home;
     private CompositeDisposable mCompositeDisposable;
     private DataAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private RecyclerView mRecyclerView2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,22 +32,17 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         loadJSON();
     }
-    private void initRecyclerView(){
+
+    private void initRecyclerView() {
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
 
+    }
 
-    }
-    private Gson getGSONConvertFactory(){
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Home.class, new HomeAdapter());
-        return builder.create();
-    }
-    private void loadJSON(){
+    private void loadJSON() {
 
         Disposable disposable = RestApi.getInstance().getHome()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,24 +63,21 @@ public class MainActivity extends AppCompatActivity {
                 });
         mCompositeDisposable.add(disposable);
     }
-    private void handleResponse(Home home){
-//        List<MovieItem> movieItemList = movie.getResults();
-//
-//
-//        movieItemArrayList = new ArrayList<>(movieItemList);
 
+    private void handleResponse(Home home) {
         mAdapter = new DataAdapter(home, this);
         mRecyclerView.setAdapter(mAdapter);
         Log.d("MovieDB", "GET RESPONSE" + home.size());
 
     }
 
-    private void handleError(Throwable error){
+    private void handleError(Throwable error) {
         Toast.makeText(this, "Error" + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         Log.d("MovieDB", "Error" + error.getLocalizedMessage());
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         mCompositeDisposable.clear();
     }

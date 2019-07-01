@@ -15,7 +15,6 @@ import com.example.zingdemoapi.adapter.ArtistRecyclerViewAdapter;
 import com.example.zingdemoapi.adapter.SeriesRecyclerViewAdapter;
 import com.example.zingdemoapi.datamodel.Genre;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
-import com.example.zingdemoapi.ui.view.ExpandableHeightGridView;
 
 public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
     private ProgramInfo programInfo;
@@ -34,8 +33,6 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
 
     private RecyclerView artistRecyclerView;
     private RecyclerView serieRecyclerView;
-    private ArtistRecyclerViewAdapter artistRecyclerViewAdapter;
-    private SeriesRecyclerViewAdapter seriesRecyclerViewAdapter;
 
     public ProgramInfoViewHolder(@NonNull View itemView, Context mContext) {
         super(itemView);
@@ -54,37 +51,38 @@ public class ProgramInfoViewHolder extends RecyclerView.ViewHolder {
         artistRecyclerView = itemView.findViewById(R.id.artist_recycler_view);
         serieRecyclerView = itemView.findViewById(R.id.series_recycler_view);
     }
-    public void setData(ProgramInfo mProgramInfo){
+
+    public void setData(ProgramInfo mProgramInfo) {
         programInfo = mProgramInfo;
         tvName.setText(programInfo.getName());
         Glide.with(context)
                 .load(programInfo.getBanner())
-                //.override(bannerImage.getLayoutParams().width, bannerImage.getLayoutParams().width * 9 / 16)
-                //.override(150, 150)
+
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(bannerImage);
         tvDescription.setText(programInfo.getDescription());
-        tvGenre.setText(tvGenre.getText() +"    "+ getGenre(programInfo));
-        tvLink.setText(tvLink.getText() +"    "+ programInfo.getUrl());
-        tvFormat.setText(tvFormat.getText() +"    "+ programInfo.getFormat());
-        tvListen.setText(tvListen.getText() +"    "+ programInfo.getListen().toString());
-        tvComment.setText(tvComment.getText() +"    "+ programInfo.getComment().toString());
-        tvRating.setText(tvRating.getText() +"    "+ programInfo.getRating().toString());
-        tvReleaseDate.setText(tvReleaseDate.getText()+"    " + programInfo.getReleaseDate());
+        tvGenre.setText(String.format("%s    %s", tvGenre.getText(), getGenre(programInfo)));
+        tvLink.setText(String.format("%s    %s", tvLink.getText(), programInfo.getUrl()));
+        tvFormat.setText(String.format("%s    %s", tvFormat.getText(), programInfo.getFormat()));
+        tvListen.setText(String.format("%s    %s", tvListen.getText(), programInfo.getListen().toString()));
+        tvComment.setText(String.format("%s    %s", tvComment.getText(), programInfo.getComment().toString()));
+        tvRating.setText(String.format("%s    %s", tvRating.getText(), programInfo.getRating().toString()));
+        tvReleaseDate.setText(String.format("%s    %s", tvReleaseDate.getText(), programInfo.getReleaseDate()));
 
-        artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), context);
-        artistRecyclerView.setLayoutManager(new LinearLayoutManager(context ,LinearLayoutManager.HORIZONTAL, false));
+        ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), context);
+        artistRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         artistRecyclerView.setAdapter(artistRecyclerViewAdapter);
 
-        seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), context);
+        SeriesRecyclerViewAdapter seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), context);
         serieRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         serieRecyclerView.setAdapter(seriesRecyclerViewAdapter);
 
     }
-    private String getGenre(ProgramInfo programInfo){
+
+    private String getGenre(ProgramInfo programInfo) {
         String genre = "";
-        for (Genre mGenre : programInfo.getGenres()){
-            genre = genre + mGenre.getName() + ", ";
+        for (Genre mGenre : programInfo.getGenres()) {
+            genre = String.format("%s%s, ", genre, mGenre.getName());
         }
         return genre;
     }
