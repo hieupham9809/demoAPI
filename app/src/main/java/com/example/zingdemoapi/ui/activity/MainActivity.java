@@ -22,7 +22,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable compositeDisposable;
+
     private DataAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RequestManager requestManager;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCompositeDisposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
         requestManager = Glide.with(this);
         initRecyclerView();
         loadJSON();
@@ -65,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
                         handleError(error);
                     }
                 });
-        mCompositeDisposable.add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     private void handleResponse(Home home) {
-        mAdapter = new DataAdapter(home, this, requestManager);
+        mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
         mRecyclerView.setAdapter(mAdapter);
         Log.d("MovieDB", "GET RESPONSE" + home.size());
 
@@ -83,6 +84,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
     }
 }

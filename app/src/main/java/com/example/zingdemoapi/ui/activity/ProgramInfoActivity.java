@@ -87,11 +87,7 @@ public class ProgramInfoActivity extends AppCompatActivity {
         super.onDestroy();
         mCompositeDisposable.clear();
     }
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
-//        startActivityForResult(returnIntent, 0);
-//        return true;
-//    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
