@@ -61,6 +61,7 @@ public class GridViewAdapter extends BaseAdapter {
             gridViewItemViewHolder = (GridViewItemViewHolder) convertView.getTag();
         }
 
+        gridViewItemViewHolder.childGridViewTitle.setText(list.get(position).getTitle());
         GlideRequest.getInstance().loadImage(requestManager, list.get(position).getThumbnail(),gridViewItemViewHolder.childGridviewImage);
 
         return convertView;

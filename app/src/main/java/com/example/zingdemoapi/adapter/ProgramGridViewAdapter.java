@@ -19,6 +19,7 @@ import java.util.List;
 
 public class ProgramGridViewAdapter extends BaseAdapter {
     private List<Program> list;
+    private String title;
     private Context context;
     private LayoutInflater mLayoutInflater;
     private RequestManager requestManager;
@@ -26,8 +27,9 @@ public class ProgramGridViewAdapter extends BaseAdapter {
         this.context = mContext;
         requestManager = mRequestManager;
     }
-    public void setmResources(List<Program> mList) {
+    public void setmResources(List<Program> mList, String mTitle ) {
         list = mList;
+        title = mTitle;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -67,6 +69,7 @@ public class ProgramGridViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProgramInfoActivity.class);
+                intent.putExtra("TITLE", title);
                 intent.putExtra("IDPROGRAM", list.get(position).getId());
                 //Toast.makeText(context, "ID: " + list.get(position).getId(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);

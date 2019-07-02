@@ -33,13 +33,15 @@ public class ProgramInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_info);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //actionBar.setDisplayShowHomeEnabled(true);
         mCompositeDisposable = new CompositeDisposable();
         requestManager = Glide.with(this);
         Intent intent = getIntent();
         int id = intent.getIntExtra("IDPROGRAM", 0);
-
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(intent.getStringExtra("TITLE"));
         initRecyclerView();
 
         loadJSON(Integer.toString(id));
@@ -85,9 +87,14 @@ public class ProgramInfoActivity extends AppCompatActivity {
         super.onDestroy();
         mCompositeDisposable.clear();
     }
-    public boolean onOptionsItemSelected(MenuItem item){
-        Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivityForResult(returnIntent, 0);
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
+//        startActivityForResult(returnIntent, 0);
+//        return true;
+//    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
         return true;
     }
 }

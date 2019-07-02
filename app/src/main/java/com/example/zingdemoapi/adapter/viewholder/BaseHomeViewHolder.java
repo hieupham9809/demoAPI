@@ -15,5 +15,5 @@ public abstract class BaseHomeViewHolder<T extends BaseClass> extends RecyclerVi
         super(itemView);
         requestManager = mRequestManager;
     }
-    public abstract void setData(List<T> list);
+    public abstract void setData(List<T> list, String title);
 }
