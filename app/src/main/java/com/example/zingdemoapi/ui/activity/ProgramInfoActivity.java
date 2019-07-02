@@ -1,11 +1,13 @@
 package com.example.zingdemoapi.ui.activity;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -25,11 +27,14 @@ public class ProgramInfoActivity extends AppCompatActivity {
     private ProgramInfoDataAdapter programInfoDataAdapter;
     private CompositeDisposable mCompositeDisposable;
     private RequestManager requestManager;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_info);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         mCompositeDisposable = new CompositeDisposable();
         requestManager = Glide.with(this);
         Intent intent = getIntent();
@@ -79,5 +84,10 @@ public class ProgramInfoActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         mCompositeDisposable.clear();
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(returnIntent, 0);
+        return true;
     }
 }

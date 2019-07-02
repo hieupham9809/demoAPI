@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.zingdemoapi.R;
 
 public class GlideRequest {
     private static GlideRequest instance;
@@ -27,6 +28,7 @@ public class GlideRequest {
     public void loadImage(RequestManager requestManager, String url, ImageView imageView){
         requestManager
                 .load(url)
+                .error(R.drawable.white_screen_of_death)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView);
     }

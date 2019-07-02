@@ -59,7 +59,7 @@ public class ProgramGridViewAdapter extends BaseAdapter {
         } else {
             titleImageViewHolder = (TitleImageViewHolder) convertView.getTag();
         }
-
+        titleImageViewHolder.childGridViewTitle.setText(list.get(position).getTitle());
         GlideRequest.getInstance().loadImage(requestManager, list.get(position).getThumbnail(), titleImageViewHolder.childGridviewImage);
 
         convertView.setOnClickListener(new View.OnClickListener() {
