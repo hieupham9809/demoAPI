@@ -30,14 +30,12 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
     private Home homedata;
     private RequestManager requestManager;
-    private CompositeDisposable compositeDisposable;
     private Context context; // Activity/Fragment 's context
 
     public DataAdapter(Home home, Context mContext, RequestManager mRequestManager, CompositeDisposable mCompositeDisposable) {
         homedata = home;
         context = mContext;
         requestManager = mRequestManager;
-        compositeDisposable = mCompositeDisposable;
     }
 
 
@@ -47,7 +45,7 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
         if (viewType == Type.BANNER) {
 
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row, parent, false);
-            return new BannerBoxViewHolder(view, context, requestManager, compositeDisposable);
+            return new BannerBoxViewHolder(view, context, requestManager);
         } else if (viewType == Type.PROGRAM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_row, parent, false);
             return new ProgramGridViewHolder(view, context, requestManager);

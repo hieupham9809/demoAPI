@@ -13,6 +13,8 @@ import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ViewPagerAdapter;
 import com.example.zingdemoapi.datamodel.Banner;
+import com.example.zingdemoapi.ui.activity.BaseActivity;
+import com.example.zingdemoapi.ui.activity.MainActivity;
 
 import java.util.List;
 import java.util.Timer;
@@ -29,7 +31,6 @@ public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
 
     private ViewPager viewPager;
     private TabLayout indicator;
-    private CompositeDisposable compositeDisposable;
     private ViewPagerAdapter mPagerAdapter;
     private Context context;
 
@@ -47,9 +48,9 @@ public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
         viewPager.setAdapter(mPagerAdapter);
         indicator.setupWithViewPager(viewPager, true);
 
-        Disposable disposable = Observable.interval(4000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
+        ((BaseActivity) context).subscribe(Observable.interval(4000, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                , new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         if (viewPager.getCurrentItem() < list.size() - 1) {
@@ -59,16 +60,14 @@ public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
                         }
                     }
                 });
-        compositeDisposable.add(disposable);
 //        Timer timer = new Timer();
 //        timer.scheduleAtFixedRate(new SliderTimer(list.size()), 4000, 6000);
 
     }
 
-    public BannerBoxViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager, CompositeDisposable mCompositeDisposable) {
+    public BannerBoxViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager) {
         super(itemView, mRequestManager);
         context = mContext;
-        compositeDisposable = mCompositeDisposable;
 
         viewPager = itemView.findViewById(R.id.viewPager);
         viewPager.getLayoutParams().width = Resources.getSystem().getDisplayMetrics().widthPixels;

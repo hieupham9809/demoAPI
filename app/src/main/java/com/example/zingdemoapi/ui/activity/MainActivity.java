@@ -20,7 +20,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private CompositeDisposable compositeDisposable;
 
@@ -49,24 +49,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadJSON() {
 
-        Disposable disposable = RestApi.getInstance().getHome()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<Home>() {
+//        Disposable disposable =
+//                .subscribe(, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable error) throws Exception {
+//                        handleError(error);
+//                    }
+//                });
+//        compositeDisposable.add(disposable);
+        subscribe(RestApi.getInstance().getHome()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                , new Consumer<Home>() {
                     @Override
                     public void accept(Home response) throws Exception {
 
                         MainActivity.this.handleResponse(response);
 
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable error) throws Exception {
-                        handleError(error);
                     }
                 });
-        compositeDisposable.add(disposable);
     }
 
     private void handleResponse(Home home) {
@@ -84,6 +85,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        compositeDisposable.clear();
+        unsubscribe();
     }
 }
