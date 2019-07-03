@@ -16,6 +16,7 @@ import com.example.zingdemoapi.request.RestApi;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -50,13 +51,7 @@ public class ProgramInfoActivity extends BaseActivity {
     }
 
     private void loadJSON(String id) {
-//        Disposable disposable =
-//                .subscribe(, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable error) throws Exception {
-//                        handleError(error);
-//                    }
-//                });
+
         subscribe(RestApi.getInstance().getProgramInfo(id)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
@@ -64,6 +59,16 @@ public class ProgramInfoActivity extends BaseActivity {
                     @Override
                     public void accept(ProgramInfo response) throws Exception {
                         ProgramInfoActivity.this.handleResponse(response);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable error) throws Exception {
+                        ProgramInfoActivity.this.handleError(error);
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.d("ZingDemoApi", "Completed ProgramInfoActivity API");
                     }
                 });
 

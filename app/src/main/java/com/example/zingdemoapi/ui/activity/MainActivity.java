@@ -17,6 +17,7 @@ import com.example.zingdemoapi.request.RestApi;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -67,19 +68,29 @@ public class MainActivity extends BaseActivity {
                         MainActivity.this.handleResponse(response);
 
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable error) throws Exception {
+                        MainActivity.this.handleError(error);
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.d("ZingDemoApi", "Completed MainActivity API");
+                    }
                 });
     }
 
     private void handleResponse(Home home) {
         mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
         mRecyclerView.setAdapter(mAdapter);
-        Log.d("MovieDB", "GET RESPONSE" + home.size());
+        Log.d("ZingDemoApi", "GET RESPONSE" + home.size());
 
     }
 
     private void handleError(Throwable error) {
         Toast.makeText(this, "Error" + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        Log.d("MovieDB", "Error" + error.getLocalizedMessage());
+        Log.d("ZingDemoApi", "Error " + error.getLocalizedMessage());
     }
 
     @Override

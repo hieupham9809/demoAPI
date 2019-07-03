@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 
@@ -25,6 +26,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
@@ -59,9 +61,17 @@ public class BannerBoxViewHolder extends BaseHomeViewHolder<Banner> {
                             viewPager.setCurrentItem(0);
                         }
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable error) throws Exception {
+                        Log.d("ZingDemoApi", "Error: " + error);
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.d("ZingDemoApi", "Completed Banner emit");
+                    }
                 });
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new SliderTimer(list.size()), 4000, 6000);
 
     }
 
