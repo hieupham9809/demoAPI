@@ -154,11 +154,37 @@
         android:id="@+id/series_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@+id/tv_series"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:layout_editor_absoluteX="-100dp" />
 
+    <Button
+        android:id="@+id/btn_load_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="@string/xem_them"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/series_recycler_view" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/btn_load_comment">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comment_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="vertical"
+            tools:layout_editor_absoluteX="-100dp" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

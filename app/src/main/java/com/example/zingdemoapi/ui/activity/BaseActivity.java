@@ -1,6 +1,7 @@
 package com.example.zingdemoapi.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -17,6 +18,8 @@ public class BaseActivity extends AppCompatActivity {
     public void subscribe(Observable observable, Consumer next, Consumer error, Action complete){
         Disposable disposable = observable
                 .subscribe(next, error, complete);
+        //Log.d("ZingDemoApi", observable.getClass().get);
+
         subscriptions.add(disposable);
     }
 

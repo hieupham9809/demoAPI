@@ -32,4 +32,5 @@ public class GlideRequest {
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView);
     }
+
 }

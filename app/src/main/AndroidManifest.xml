@@ -14,6 +14,9 @@
         <activity android:name=".ui.activity.ProgramInfoActivity"
 
             ></activity>
+        <activity android:name=".ui.activity.ProgramInfoActivitys"
+
+            ></activity>
         <activity
 
             android:name=".ui.activity.MainActivity">

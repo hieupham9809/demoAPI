@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
+import com.example.zingdemoapi.adapter.viewholder.ProgramInfoViewHolder;
+import com.example.zingdemoapi.datamodel.DataComment;
 import com.example.zingdemoapi.datamodel.Home;
 import com.example.zingdemoapi.request.RestApi;
 
@@ -37,6 +39,7 @@ public class MainActivity extends BaseActivity {
         requestManager = Glide.with(this);
         initRecyclerView();
         loadJSON();
+
     }
 
     private void initRecyclerView() {

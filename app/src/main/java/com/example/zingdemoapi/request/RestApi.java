@@ -1,7 +1,9 @@
 package com.example.zingdemoapi.request;
 
+import com.example.zingdemoapi.datamodel.DataComment;
 import com.example.zingdemoapi.datamodel.Home;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
+import com.example.zingdemoapi.typeadapter.DataCommentAdapter;
 import com.example.zingdemoapi.typeadapter.HomeAdapter;
 import com.example.zingdemoapi.typeadapter.ProgramInfoAdapter;
 import com.google.gson.Gson;
@@ -28,6 +30,7 @@ public class RestApi {
     private Gson getGSONConvertFactory() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Home.class, new HomeAdapter());
+        builder.registerTypeAdapter(DataComment.class, new DataCommentAdapter());
         builder.registerTypeAdapter(ProgramInfo.class, new ProgramInfoAdapter());
         return builder.create();
     }
@@ -39,7 +42,9 @@ public class RestApi {
     public Observable<ProgramInfo> getProgramInfo(String programId) {
         return requestInterface.getProgramInfo(programId);
     }
-
+    public Observable<DataComment> getDataComment(String programId, String page){
+        return requestInterface.getDataComment(programId, page);
+    }
     public static RestApi getInstance() {
         if (instance == null) {
             synchronized (RestApi.class) {
