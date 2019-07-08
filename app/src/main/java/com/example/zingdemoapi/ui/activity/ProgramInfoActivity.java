@@ -165,7 +165,7 @@ public class ProgramInfoActivity extends BaseActivity {
             }
         };
         commentRecyclerView.addOnScrollListener(scrollListener);
-        //commentRecyclerView.setNestedScrollingEnabled(false);
+
 
         Log.d("ZingDemoApi", "load more");
     }
@@ -174,18 +174,8 @@ public class ProgramInfoActivity extends BaseActivity {
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         loadJSONComment(Integer.toString(id), Integer.toString(offset));
-        //  --> Append the new data objects to the existing set of items inside the array of items
 
-        //Log.d("ZingDemoApi", "adapter list size: "+ dataCommentRecyclerViewAdapter.getCommentList().size());
-        //Log.d("ZingDemoApi", "before dataComment list size: "+ dataComment.getCommentList().size());
-//        ArrayList<Comment> commentList = new ArrayList<>(dataComment.getCommentList());
-//        Log.d("ZingDemoApi", "before dataComment list size: "+ dataComment.getCommentList().size());
-//
-//        dataCommentRecyclerViewAdapter.getCommentList().addAll(commentList);
-//
-//        Log.d("ZingDemoApi", "after dataComment list size: "+ commentList.size());
 
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
     }
     private void loadJSON(String id) {
 
@@ -220,16 +210,9 @@ public class ProgramInfoActivity extends BaseActivity {
                 , new Consumer<DataComment>() {
                     @Override
                     public void accept(DataComment response) throws Exception {
-
-
                         dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
 
-
-
-//        dataCommentRecyclerViewAdapter = new DataCommentRecyclerViewAdapter(requestManager);
-                        //commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
                         linearLayoutManager = new LinearLayoutManager(getBaseContext());
-                        //commentRecyclerView.setLayoutManager(linearLayoutManager);
                         commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
 
                         commentRecyclerView.setLayoutManager(linearLayoutManager);
@@ -274,11 +257,10 @@ public class ProgramInfoActivity extends BaseActivity {
 
     }
     private void handleResponse(DataComment mDataComment){
-        //Log.d("ZingDemoApi", "response list size: "+mDataComment.getCommentList().size());
-        //dataComment = mDataComment;
+        //  --> Append the new data objects to the existing set of items inside the array of items
         dataCommentRecyclerViewAdapter.getCommentList().addAll(mDataComment.getCommentList());
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
         dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), mDataComment.getCommentList().size());
-
     }
 
     @Override
