@@ -51,10 +51,9 @@ public class ProgramInfoActivity extends BaseActivity {
 
     private RecyclerView artistRecyclerView;
     private RecyclerView serieRecyclerView;
-    private RecyclerView commentRecyclerView;
 
     private EndlessRecyclerViewScrollListener scrollListener;
-    private DataCommentRecyclerViewAdapter dataCommentRecyclerViewAdapter;
+    //private DataCommentRecyclerViewAdapter dataCommentRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
     private int id;
 
@@ -77,7 +76,7 @@ public class ProgramInfoActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         actionBar.setTitle(intent.getStringExtra("TITLE"));
-        loadJSONfirst(Integer.toString(id), "0");
+        //loadJSONfirst(Integer.toString(id), "0");
         //loadComment();
         //loadJSON(Integer.toString(id));
     }
@@ -103,9 +102,8 @@ public class ProgramInfoActivity extends BaseActivity {
 
         artistRecyclerView = findViewById(R.id.artist_recycler_view);
         serieRecyclerView = findViewById(R.id.series_recycler_view);
-        commentRecyclerView = findViewById(R.id.comment_recycler_view);
 
-        dataCommentRecyclerViewAdapter = new DataCommentRecyclerViewAdapter(requestManager);
+        //dataCommentRecyclerViewAdapter = new DataCommentRecyclerViewAdapter(requestManager);
 
     }
 
@@ -151,32 +149,28 @@ public class ProgramInfoActivity extends BaseActivity {
         return genre;
     }
     private void loadComment(){
-        // load api
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        //commentRecyclerView.setLayoutManager(linearLayoutManager);
-//        commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
-//
-//        commentRecyclerView.setLayoutManager(linearLayoutManager);
-
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                loadNextDataFromApi(page);
-            }
-        };
-        commentRecyclerView.addOnScrollListener(scrollListener);
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("IDPROGRAM", programInfo.getId());
+        startActivity(intent);
+//        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                loadNextDataFromApi(page);
+//            }
+//        };
+//        commentRecyclerView.addOnScrollListener(scrollListener);
 
 
         Log.d("ZingDemoApi", "load more");
     }
-    public void loadNextDataFromApi(int offset) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        loadJSONComment(Integer.toString(id), Integer.toString(offset));
-
-
-    }
+//    public void loadNextDataFromApi(int offset) {
+//        // Send an API request to retrieve appropriate paginated data
+//        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+//        //  --> Deserialize and construct new model objects from the API response
+//        loadJSONComment(Integer.toString(id), Integer.toString(offset));
+//
+//
+//    }
     private void loadJSON(String id) {
 
         subscribe(RestApi.getInstance().getProgramInfo(id)
@@ -202,66 +196,66 @@ public class ProgramInfoActivity extends BaseActivity {
 
     }
 
-    private void loadJSONfirst(String id, String page) {
-
-        ProgramInfoActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                , new Consumer<DataComment>() {
-                    @Override
-                    public void accept(DataComment response) throws Exception {
-                        dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
-
-                        linearLayoutManager = new LinearLayoutManager(getBaseContext());
-                        commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
-
-                        commentRecyclerView.setLayoutManager(linearLayoutManager);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable error) throws Exception {
-                        Log.d("ZingDemoApi", "Error: " + error);
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Log.d("ZingDemoApi", "Completed load comment API");
-                    }
-                });
-
-
-    }
-    private void loadJSONComment(String id, String page) {
-
-        ProgramInfoActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                , new Consumer<DataComment>() {
-                    @Override
-                    public void accept(DataComment response) throws Exception {
-
-                        ProgramInfoActivity.this.handleResponse(response);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable error) throws Exception {
-                        Log.d("ZingDemoApi", "Error: " + error);
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Log.d("ZingDemoApi", "Completed load comment API");
-                    }
-                });
-
-
-    }
-    private void handleResponse(DataComment mDataComment){
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        dataCommentRecyclerViewAdapter.getCommentList().addAll(mDataComment.getCommentList());
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-        dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), mDataComment.getCommentList().size());
-    }
+//    private void loadJSONfirst(String id, String page) {
+//
+//        ProgramInfoActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribeOn(Schedulers.io())
+//                , new Consumer<DataComment>() {
+//                    @Override
+//                    public void accept(DataComment response) throws Exception {
+//                        dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
+//
+//                        linearLayoutManager = new LinearLayoutManager(getBaseContext());
+//                        commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
+//
+//                        commentRecyclerView.setLayoutManager(linearLayoutManager);
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable error) throws Exception {
+//                        Log.d("ZingDemoApi", "Error: " + error);
+//                    }
+//                }, new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        Log.d("ZingDemoApi", "Completed load comment API");
+//                    }
+//                });
+//
+//
+//    }
+//    private void loadJSONComment(String id, String page) {
+//
+//        ProgramInfoActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribeOn(Schedulers.io())
+//                , new Consumer<DataComment>() {
+//                    @Override
+//                    public void accept(DataComment response) throws Exception {
+//
+//                        ProgramInfoActivity.this.handleResponse(response);
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable error) throws Exception {
+//                        Log.d("ZingDemoApi", "Error: " + error);
+//                    }
+//                }, new Action() {
+//                    @Override
+//                    public void run() throws Exception {
+//                        Log.d("ZingDemoApi", "Completed load comment API");
+//                    }
+//                });
+//
+//
+//    }
+//    private void handleResponse(DataComment mDataComment){
+//        //  --> Append the new data objects to the existing set of items inside the array of items
+//        dataCommentRecyclerViewAdapter.getCommentList().addAll(mDataComment.getCommentList());
+//        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+//        dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), mDataComment.getCommentList().size());
+//    }
 
     @Override
     public void onDestroy() {

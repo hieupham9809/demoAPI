@@ -14,7 +14,7 @@
         <activity android:name=".ui.activity.ProgramInfoActivity"
 
             ></activity>
-        <activity android:name=".ui.activity.ProgramInfoActivitys"
+        <activity android:name=".ui.activity.CommentActivity"
 
             ></activity>
         <activity
