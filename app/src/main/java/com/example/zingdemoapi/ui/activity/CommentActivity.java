@@ -39,19 +39,24 @@ public class CommentActivity extends BaseActivity {
 
         requestManager = Glide.with(this);
         Intent intent = getIntent();
-        if (intent.hasExtra(Constant.PROGRAMID)){
+        if (intent.hasExtra(Constant.PROGRAMID)) {
             id = intent.getIntExtra(Constant.PROGRAMID, 0);
         }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(String.format(getString(R.string.title_comment_activity)+"\"%s\"",intent.getStringExtra(Constant.TITLE)));
+            actionBar.setTitle(String.format(getString(R.string.title_comment_activity) + "\"%s\"", intent.getStringExtra(Constant.TITLE)));
         }
         initRecyclerView();
-        loadPageComment(id, page);
+        addLoadmoreListener();
+
 
     }
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadPageComment(id, page);
+    }
     private void initRecyclerView() {
         commentRecyclerView = findViewById(R.id.comment_recycler_view);
 
@@ -61,6 +66,7 @@ public class CommentActivity extends BaseActivity {
 
     private void addLoadmoreListener() {
         // load api
+        linearLayoutManager = new LinearLayoutManager(getBaseContext());
 
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -84,13 +90,11 @@ public class CommentActivity extends BaseActivity {
                     public void accept(DataComment response) throws Exception {
                         dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
 
-                        if (page == Constant.INITIAL_PAGE){
+                        if (page == Constant.INITIAL_PAGE) {
                             commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
 
-                            linearLayoutManager = new LinearLayoutManager(getBaseContext());
                             commentRecyclerView.setLayoutManager(linearLayoutManager);
 
-                            addLoadmoreListener();
                         } else {
                             dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), response.getCommentList().size());
 
@@ -108,8 +112,6 @@ public class CommentActivity extends BaseActivity {
                         Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.comment_complete_message));
                     }
                 });
-
-
     }
 
     @Override
