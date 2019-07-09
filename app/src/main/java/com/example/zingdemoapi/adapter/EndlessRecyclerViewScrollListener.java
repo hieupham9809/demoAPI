@@ -10,8 +10,6 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private int visibleThreshold = 5;
-    // The current offset index of data you have loaded
-    private int currentPage = 1;
     // The total number of items in the dataset after the last load
     private int previousTotalItemCount = 0;
     // True if we are still waiting for the last set of data to load.
@@ -79,7 +77,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
         if (totalItemCount < previousTotalItemCount) {
-            this.currentPage = this.startingPageIndex;
+            //this.currentPage = this.startingPageIndex;
             this.previousTotalItemCount = totalItemCount;
             if (totalItemCount == 0) {
                 this.loading = true;
@@ -107,21 +105,18 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         if (!loading && (firstVisibleItem + visibleThreshold) >= (totalItemCount - visibleItemCount )) {
 //            Log.d("ZingDemoApi", "lastVisibleItemPosition: " + lastVisibleItemPosition);
 //            Log.d("ZingDemoApi", "totalItemCOunt: " + totalItemCount);
-            currentPage++;
-
-            onLoadMore(currentPage, totalItemCount, view);
+            onLoadMore();
             loading = true;
         }
     }
 
     // Call this method whenever performing new searches
     public void resetState() {
-        this.currentPage = this.startingPageIndex;
         this.previousTotalItemCount = 0;
         this.loading = true;
     }
 
     // Defines the process for actually loading more data based on page
-    public abstract void onLoadMore(int page, int totalItemsCount, RecyclerView view);
+    public abstract void onLoadMore();
 
 }

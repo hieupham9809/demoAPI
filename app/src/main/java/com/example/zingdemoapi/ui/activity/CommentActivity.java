@@ -30,6 +30,7 @@ public class CommentActivity extends BaseActivity {
     private DataCommentRecyclerViewAdapter dataCommentRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
     private int id;
+    private int page = Constant.INITIAL_PAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class CommentActivity extends BaseActivity {
             actionBar.setTitle(String.format(getString(R.string.title_comment_activity)+"\"%s\"",intent.getStringExtra(Constant.TITLE)));
         }
         initRecyclerView();
-        loadPageComment(id, Constant.INITIAL_PAGE);
+        loadPageComment(id, page);
 
     }
 
@@ -63,7 +64,8 @@ public class CommentActivity extends BaseActivity {
 
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+            public void onLoadMore() {
+                page++;
                 loadPageComment(id, page);
             }
         };
