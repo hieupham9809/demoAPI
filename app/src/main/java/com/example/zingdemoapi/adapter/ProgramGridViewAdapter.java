@@ -14,7 +14,6 @@ import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Program;
 import com.example.zingdemoapi.request.GlideRequest;
 import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
-import com.example.zingdemoapi.ui.activity.ProgramInfoActivitys;
 
 import java.util.List;
 

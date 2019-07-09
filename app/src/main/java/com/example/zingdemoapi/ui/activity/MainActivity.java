@@ -1,6 +1,5 @@
 package com.example.zingdemoapi.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +10,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
-import com.example.zingdemoapi.adapter.viewholder.ProgramInfoViewHolder;
-import com.example.zingdemoapi.datamodel.DataComment;
 import com.example.zingdemoapi.datamodel.Home;
 import com.example.zingdemoapi.request.RestApi;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -53,14 +49,6 @@ public class MainActivity extends BaseActivity {
 
     private void loadJSON() {
 
-//        Disposable disposable =
-//                .subscribe(, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable error) throws Exception {
-//                        handleError(error);
-//                    }
-//                });
-//        compositeDisposable.add(disposable);
         subscribe(RestApi.getInstance().getHome()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
