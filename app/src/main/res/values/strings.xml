@@ -4,7 +4,6 @@
     <string name="genres">Thể loại:</string>
     <string name="t_n">Tên</string>
     <string name="description">Mô tả</string>
-    <string name="link">Link</string>
     <string name="ink">Link:</string>
     <string name="format">Định dạng:</string>
     <string name="listen">Lượt xem:</string>
@@ -15,4 +14,9 @@
     <string name="series">Series</string>
     <string name="xem_them">xem comment</string>
     <string name="avatar">user_avatar</string>
+    <string name="title_comment_activity">Bình luận của</string>
+    <string name="app_tag">ZingDemoApi</string>
+    <string name="error_message">Error:</string>
+    <string name="comment_complete_message">Completed load comment API</string>
+    <string name="programinfo_complete_message">Completed ProgramInfoActivity API</string>
 </resources>

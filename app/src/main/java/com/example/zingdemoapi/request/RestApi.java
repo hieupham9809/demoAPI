@@ -1,5 +1,6 @@
 package com.example.zingdemoapi.request;
 
+import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.DataComment;
 import com.example.zingdemoapi.datamodel.Home;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
@@ -15,13 +16,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestApi {
-    final private String BASE = "http://dev.api.tv.zing.vn/";
+
     private static RestApi instance;
     private RequestInterface requestInterface;
 
     private RestApi() {
         requestInterface = new Retrofit.Builder()
-                .baseUrl(BASE)
+                .baseUrl(Constant.BASE)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(getGSONConvertFactory()))
                 .build().create(RequestInterface.class);
@@ -39,10 +40,10 @@ public class RestApi {
         return requestInterface.register();
     }
 
-    public Observable<ProgramInfo> getProgramInfo(String programId) {
+    public Observable<ProgramInfo> getProgramInfo(int programId) {
         return requestInterface.getProgramInfo(programId);
     }
-    public Observable<DataComment> getDataComment(String programId, String page){
+    public Observable<DataComment> getDataComment(int programId, int page){
         return requestInterface.getDataComment(programId, page);
     }
     public static RestApi getInstance() {

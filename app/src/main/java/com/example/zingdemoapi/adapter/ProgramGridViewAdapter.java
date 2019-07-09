@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
+import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.Program;
 import com.example.zingdemoapi.request.GlideRequest;
 import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
@@ -69,8 +70,8 @@ public class ProgramGridViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProgramInfoActivity.class);
-                intent.putExtra("TITLE", title);
-                intent.putExtra("IDPROGRAM", list.get(position).getId());
+                intent.putExtra(Constant.TITLE, title);
+                intent.putExtra(Constant.PROGRAMID, list.get(position).getId());
                 //Toast.makeText(context, "ID: " + list.get(position).getId(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }

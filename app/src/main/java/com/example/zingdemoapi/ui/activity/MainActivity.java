@@ -23,7 +23,6 @@ public class MainActivity extends BaseActivity {
 
     private CompositeDisposable compositeDisposable;
 
-    private DataAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RequestManager requestManager;
 
@@ -34,7 +33,7 @@ public class MainActivity extends BaseActivity {
         compositeDisposable = new CompositeDisposable();
         requestManager = Glide.with(this);
         initRecyclerView();
-        loadJSON();
+        loadHome();
 
     }
 
@@ -47,7 +46,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void loadJSON() {
+    private void loadHome() {
 
         subscribe(RestApi.getInstance().getHome()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -73,7 +72,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void handleResponse(Home home) {
-        mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
+        DataAdapter mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
         mRecyclerView.setAdapter(mAdapter);
         Log.d("ZingDemoApi", "GET RESPONSE" + home.size());
 

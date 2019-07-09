@@ -1,7 +1,6 @@
 package com.example.zingdemoapi.ui.activity;
 
 import android.content.Intent;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +15,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.ArtistRecyclerViewAdapter;
-import com.example.zingdemoapi.adapter.DataCommentRecyclerViewAdapter;
-import com.example.zingdemoapi.adapter.EndlessParentScrollListener;
-import com.example.zingdemoapi.adapter.EndlessRecyclerViewScrollListener;
-import com.example.zingdemoapi.adapter.ProgramInfoDataAdapter;
 import com.example.zingdemoapi.adapter.SeriesRecyclerViewAdapter;
-import com.example.zingdemoapi.adapter.viewholder.ProgramInfoViewHolder;
-import com.example.zingdemoapi.datamodel.DataComment;
+import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.Genre;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
 import com.example.zingdemoapi.request.GlideRequest;
@@ -52,33 +46,28 @@ public class ProgramInfoActivity extends BaseActivity {
     private RecyclerView artistRecyclerView;
     private RecyclerView serieRecyclerView;
 
-    private EndlessRecyclerViewScrollListener scrollListener;
-    //private DataCommentRecyclerViewAdapter dataCommentRecyclerViewAdapter;
-    private LinearLayoutManager linearLayoutManager;
     private int id;
 
     private Button btnLoad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_info);
 
-        //actionBar.setDisplayShowHomeEnabled(true);
         requestManager = Glide.with(this);
         Intent intent = getIntent();
-        id = intent.getIntExtra("IDPROGRAM", 0);
+        id = intent.getIntExtra(Constant.PROGRAMID, 0);
         initRecyclerView();
 
-        loadJSON(Integer.toString(id));
+        loadProgramInfo(id);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(intent.getStringExtra(Constant.TITLE));
         }
-        actionBar.setTitle(intent.getStringExtra("TITLE"));
-        //loadJSONfirst(Integer.toString(id), "0");
-        //loadComment();
-        //loadJSON(Integer.toString(id));
+
     }
 
     private void initRecyclerView() {
@@ -136,11 +125,8 @@ public class ProgramInfoActivity extends BaseActivity {
         serieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         serieRecyclerView.setAdapter(seriesRecyclerViewAdapter);
 
-
-        //loadJSONfirst(programInfo.getId().toString(), "0");
-
-
     }
+
     private String getGenre(ProgramInfo programInfo) {
         String genre = "";
         for (Genre mGenre : programInfo.getGenres()) {
@@ -148,31 +134,16 @@ public class ProgramInfoActivity extends BaseActivity {
         }
         return genre;
     }
-    private void loadComment(){
+
+    private void loadComment() {
         Intent intent = new Intent(this, CommentActivity.class);
-        intent.putExtra("IDPROGRAM", programInfo.getId());
-        intent.putExtra("TITLE", programInfo.getName());
+        intent.putExtra(Constant.PROGRAMID, programInfo.getId());
+        intent.putExtra(Constant.TITLE, programInfo.getName());
         startActivity(intent);
-//        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                loadNextDataFromApi(page);
-//            }
-//        };
-//        commentRecyclerView.addOnScrollListener(scrollListener);
 
-
-        Log.d("ZingDemoApi", "load more");
     }
-//    public void loadNextDataFromApi(int offset) {
-//        // Send an API request to retrieve appropriate paginated data
-//        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-//        //  --> Deserialize and construct new model objects from the API response
-//        loadJSONComment(Integer.toString(id), Integer.toString(offset));
-//
-//
-//    }
-    private void loadJSON(String id) {
+
+    private void loadProgramInfo(int id) {
 
         subscribe(RestApi.getInstance().getProgramInfo(id)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -185,78 +156,18 @@ public class ProgramInfoActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable error) throws Exception {
-                        Log.d("ZingDemoApi", "Error" + error.getLocalizedMessage());
+                        Log.d(String.valueOf(R.string.app_tag), R.string.error_message + error.getLocalizedMessage());
 
                     }
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.d("ZingDemoApi", "Completed ProgramInfoActivity API");
+                        Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.programinfo_complete_message));
                     }
                 });
 
     }
 
-//    private void loadJSONfirst(String id, String page) {
-//
-//        ProgramInfoActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribeOn(Schedulers.io())
-//                , new Consumer<DataComment>() {
-//                    @Override
-//                    public void accept(DataComment response) throws Exception {
-//                        dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
-//
-//                        linearLayoutManager = new LinearLayoutManager(getBaseContext());
-//                        commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
-//
-//                        commentRecyclerView.setLayoutManager(linearLayoutManager);
-//                    }
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable error) throws Exception {
-//                        Log.d("ZingDemoApi", "Error: " + error);
-//                    }
-//                }, new Action() {
-//                    @Override
-//                    public void run() throws Exception {
-//                        Log.d("ZingDemoApi", "Completed load comment API");
-//                    }
-//                });
-//
-//
-//    }
-//    private void loadJSONComment(String id, String page) {
-//
-//        ProgramInfoActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribeOn(Schedulers.io())
-//                , new Consumer<DataComment>() {
-//                    @Override
-//                    public void accept(DataComment response) throws Exception {
-//
-//                        ProgramInfoActivity.this.handleResponse(response);
-//                    }
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable error) throws Exception {
-//                        Log.d("ZingDemoApi", "Error: " + error);
-//                    }
-//                }, new Action() {
-//                    @Override
-//                    public void run() throws Exception {
-//                        Log.d("ZingDemoApi", "Completed load comment API");
-//                    }
-//                });
-//
-//
-//    }
-//    private void handleResponse(DataComment mDataComment){
-//        //  --> Append the new data objects to the existing set of items inside the array of items
-//        dataCommentRecyclerViewAdapter.getCommentList().addAll(mDataComment.getCommentList());
-//        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-//        dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), mDataComment.getCommentList().size());
-//    }
 
     @Override
     public void onDestroy() {
