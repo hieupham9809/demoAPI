@@ -151,6 +151,7 @@ public class ProgramInfoActivity extends BaseActivity {
     private void loadComment(){
         Intent intent = new Intent(this, CommentActivity.class);
         intent.putExtra("IDPROGRAM", programInfo.getId());
+        intent.putExtra("TITLE", programInfo.getName());
         startActivity(intent);
 //        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
 //            @Override

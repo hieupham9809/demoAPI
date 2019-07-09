@@ -69,7 +69,7 @@ public class ProgramGridViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProgramInfoActivity.class);
-//                intent.putExtra("TITLE", title);
+                intent.putExtra("TITLE", title);
                 intent.putExtra("IDPROGRAM", list.get(position).getId());
                 //Toast.makeText(context, "ID: " + list.get(position).getId(), Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);

@@ -44,7 +44,7 @@ public class CommentActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        actionBar.setTitle(intent.getStringExtra("TITLE"));
+        actionBar.setTitle(String.format("Bình luận của \"%s\"",intent.getStringExtra("TITLE")));
         initRecyclerView();
         loadJSONfirst(Integer.toString(id), "0");
         //loadComment();

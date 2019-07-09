@@ -14,4 +14,5 @@
     <string name="artist">Các diễn viên:</string>
     <string name="series">Series</string>
     <string name="xem_them">xem comment</string>
+    <string name="avatar">user_avatar</string>
 </resources>
