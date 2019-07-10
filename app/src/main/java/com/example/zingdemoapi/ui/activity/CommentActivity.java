@@ -31,7 +31,7 @@ public class CommentActivity extends BaseActivity {
     private LinearLayoutManager linearLayoutManager;
     private int id;
     private int page = Constant.INITIAL_PAGE;
-
+    private boolean isLoad = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +72,7 @@ public class CommentActivity extends BaseActivity {
             @Override
             public void onLoadMore() {
                 page++;
+                isLoad = false;
                 loadPageComment(id, page);
             }
         };
@@ -81,37 +82,40 @@ public class CommentActivity extends BaseActivity {
 
 
     private void loadPageComment(int id, final int page) {
+        if (!isLoad) {
+            CommentActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io())
+                    , new Consumer<DataComment>() {
+                        @Override
+                        public void accept(DataComment response) throws Exception {
+                            dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
+                            Log.d("ZingDemoApi", "load api, comment list size: " + dataCommentRecyclerViewAdapter.getItemCount());
 
-        CommentActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                , new Consumer<DataComment>() {
-                    @Override
-                    public void accept(DataComment response) throws Exception {
-                        dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
+                            if (page == Constant.INITIAL_PAGE) {
+                                commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
 
-                        if (page == Constant.INITIAL_PAGE) {
-                            commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
+                                commentRecyclerView.setLayoutManager(linearLayoutManager);
 
-                            commentRecyclerView.setLayoutManager(linearLayoutManager);
+                            } else {
+                                dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), response.getCommentList().size());
 
-                        } else {
-                            dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), response.getCommentList().size());
+                            }
 
                         }
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable error) throws Exception {
-                        Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.error_message) + error);
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.comment_complete_message));
-                    }
-                });
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable error) throws Exception {
+                            Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.error_message) + error);
+                        }
+                    }, new Action() {
+                        @Override
+                        public void run() throws Exception {
+                            Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.comment_complete_message));
+                        }
+                    });
+        }
+        isLoad = true;
     }
 
     @Override
