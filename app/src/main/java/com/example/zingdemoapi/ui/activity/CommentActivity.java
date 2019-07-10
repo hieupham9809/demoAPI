@@ -129,12 +129,12 @@ public class CommentActivity extends BaseActivity {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable error) throws Exception {
-                            Log.d("ZingDemoApi", getString(R.string.error_message) + error);
+                            Log.d(getString(R.string.app_tag), getString(R.string.error_message) + error);
                         }
                     }, new Action() {
                         @Override
                         public void run() throws Exception {
-                            Log.d("ZingDemoApi", getString(R.string.comment_complete_message));
+                            Log.d(getString(R.string.app_tag), getString(R.string.comment_complete_message));
                         }
                     });
         }

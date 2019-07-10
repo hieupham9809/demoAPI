@@ -39,7 +39,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         View itemView = LayoutInflater.from(context).inflate(R.layout.viewpager_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
-        GlideRequest.getInstance().loadImage(requestManager, mResources.get(position).getThumbnail(), imageView);
+        GlideRequest.getInstance().loadImage(requestManager, mResources.get(position).getThumbnail(), imageView, R.drawable.default_thumbnail);
 
         container.addView(itemView);
 

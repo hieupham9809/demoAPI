@@ -41,7 +41,7 @@ public class ArtistRecyclerViewAdapter extends RecyclerView.Adapter<ArtistRecycl
     public void onBindViewHolder(@NonNull ArtistViewHolder artistViewHolder, int i) {
         artistViewHolder.artistDOB.setText(artistList.get(i).getDob());
         artistViewHolder.artistName.setText(artistList.get(i).getName());
-        GlideRequest.getInstance().loadImage(requestManager, artistList.get(i).getAvatar(), artistViewHolder.artistImage);
+        GlideRequest.getInstance().loadImage(requestManager, artistList.get(i).getAvatar(), artistViewHolder.artistImage, R.drawable.default_program);
     }
 
     @Override

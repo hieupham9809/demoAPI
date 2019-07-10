@@ -64,7 +64,7 @@ public class DataCommentRecyclerViewAdapter extends RecyclerView.Adapter<DataCom
             commentViewHolder.dateComment.setText(getDate(commentList.get(i).getTime()));
             commentViewHolder.content.setText(commentList.get(i).getContent());
 
-            GlideRequest.getInstance().loadImage(requestManager, commentList.get(i).getUserAvatar(), commentViewHolder.avatar);
+            GlideRequest.getInstance().loadImage(requestManager, commentList.get(i).getUserAvatar(), commentViewHolder.avatar, R.drawable.null_user);
         }
 
     }

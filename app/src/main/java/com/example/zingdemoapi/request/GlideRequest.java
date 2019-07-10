@@ -25,10 +25,10 @@ public class GlideRequest {
         return instance;
     }
 
-    public void loadImage(RequestManager requestManager, String url, ImageView imageView){
+    public void loadImage(RequestManager requestManager, String url, ImageView imageView, int defaultImage){
         requestManager
                 .load(url)
-                //.error(R.drawable.null_image)
+                .error(defaultImage)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView);
     }

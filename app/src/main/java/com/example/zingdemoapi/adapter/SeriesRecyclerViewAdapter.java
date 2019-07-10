@@ -37,7 +37,7 @@ public class SeriesRecyclerViewAdapter extends RecyclerView.Adapter<SeriesRecycl
 
         seriesItemViewHolder.tvSerieName.setText(serieList.get(i).getName());
 
-        GlideRequest.getInstance().loadImage(requestManager, serieList.get(i).getThumbnail(), seriesItemViewHolder.ivSerieName);
+        GlideRequest.getInstance().loadImage(requestManager, serieList.get(i).getThumbnail(), seriesItemViewHolder.ivSerieName, R.drawable.default_thumbnail);
     }
 
     @Override

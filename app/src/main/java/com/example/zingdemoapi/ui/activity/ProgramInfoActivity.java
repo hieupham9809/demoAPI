@@ -103,7 +103,7 @@ public class ProgramInfoActivity extends BaseActivity {
         programInfo = mProgramInfo;
         tvName.setText(programInfo.getName());
 
-        GlideRequest.getInstance().loadImage(requestManager, programInfo.getBanner(), bannerImage);
+        GlideRequest.getInstance().loadImage(requestManager, programInfo.getBanner(), bannerImage, R.drawable.default_thumbnail);
         tvDescription.setText(programInfo.getDescription());
         tvGenre.setText(String.format("%s    %s", tvGenre.getText(), getGenre(programInfo)));
         tvLink.setText(String.format("%s    %s", tvLink.getText(), programInfo.getUrl()));
@@ -159,13 +159,13 @@ public class ProgramInfoActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable error) throws Exception {
-                        Log.d(String.valueOf(R.string.app_tag), R.string.error_message + error.getLocalizedMessage());
+                        Log.d(getString(R.string.app_tag), getString(R.string.error_message) + error.getLocalizedMessage());
 
                     }
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.programinfo_complete_message));
+                        Log.d(getString(R.string.app_tag), getString(R.string.programinfo_complete_message));
                     }
                 });
 
