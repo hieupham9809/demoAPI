@@ -79,15 +79,7 @@ public class CommentActivity extends BaseActivity {
                 isPageLoaded = false;
                 loadPageComment(id, page);
             }
-//            @Override
-//            public void onLoadFinal(){
-//                Comment comment = new Comment();
-//                comment.setCommentId(Constant.END_COMMENT_VIEW_TYPE);
-//                int currentSize = dataCommentRecyclerViewAdapter.getItemCount();
-//                dataCommentRecyclerViewAdapter.getCommentList().add(comment);
-//                dataCommentRecyclerViewAdapter.notifyItemRangeInserted(currentSize, 1);
-//                //Log.d(String.valueOf(R.string.app_tag), "onLoadFinal called");
-//            }
+
         };
         commentRecyclerView.addOnScrollListener(scrollListener);
 
