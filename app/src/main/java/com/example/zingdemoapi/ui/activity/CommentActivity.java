@@ -12,6 +12,7 @@ import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataCommentRecyclerViewAdapter;
 import com.example.zingdemoapi.adapter.EndlessRecyclerViewScrollListener;
+import com.example.zingdemoapi.datamodel.Comment;
 import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.DataComment;
 import com.example.zingdemoapi.request.RestApi;
@@ -31,12 +32,15 @@ public class CommentActivity extends BaseActivity {
     private LinearLayoutManager linearLayoutManager;
     private int id;
     private int page = Constant.INITIAL_PAGE;
-    private boolean isLoad = false;
+    private boolean isPageLoaded = false;
+    private boolean isEnd = false;
+    private Comment endComment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
+        endComment = new Comment();
         requestManager = Glide.with(this);
         Intent intent = getIntent();
         if (intent.hasExtra(Constant.PROGRAMID)) {
@@ -72,9 +76,18 @@ public class CommentActivity extends BaseActivity {
             @Override
             public void onLoadMore() {
                 page++;
-                isLoad = false;
+                isPageLoaded = false;
                 loadPageComment(id, page);
             }
+//            @Override
+//            public void onLoadFinal(){
+//                Comment comment = new Comment();
+//                comment.setCommentId(Constant.END_COMMENT_VIEW_TYPE);
+//                int currentSize = dataCommentRecyclerViewAdapter.getItemCount();
+//                dataCommentRecyclerViewAdapter.getCommentList().add(comment);
+//                dataCommentRecyclerViewAdapter.notifyItemRangeInserted(currentSize, 1);
+//                //Log.d(String.valueOf(R.string.app_tag), "onLoadFinal called");
+//            }
         };
         commentRecyclerView.addOnScrollListener(scrollListener);
 
@@ -82,40 +95,49 @@ public class CommentActivity extends BaseActivity {
 
 
     private void loadPageComment(int id, final int page) {
-        if (!isLoad) {
+        if (!isPageLoaded && !isEnd) {
+            isPageLoaded = true;
+
             CommentActivity.this.subscribe(RestApi.getInstance().getDataComment(id, page)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io())
                     , new Consumer<DataComment>() {
                         @Override
                         public void accept(DataComment response) throws Exception {
-                            dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
-                            Log.d("ZingDemoApi", "load api, comment list size: " + dataCommentRecyclerViewAdapter.getItemCount());
 
-                            if (page == Constant.INITIAL_PAGE) {
-                                commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
-
-                                commentRecyclerView.setLayoutManager(linearLayoutManager);
-
+                            int currentSize = dataCommentRecyclerViewAdapter.getItemCount();
+                            if (response.getCommentList().size() == 0){
+                                isEnd = true;
+                                endComment.setCommentId(Constant.END_COMMENT_VIEW_TYPE);
+                                dataCommentRecyclerViewAdapter.getCommentList().add(endComment);
+                                dataCommentRecyclerViewAdapter.notifyItemRangeInserted(currentSize, 1);
                             } else {
-                                dataCommentRecyclerViewAdapter.notifyItemRangeInserted(dataCommentRecyclerViewAdapter.getItemCount(), response.getCommentList().size());
+                                dataCommentRecyclerViewAdapter.getCommentList().addAll(response.getCommentList());
+                                //Log.d("ZingDemoApi", "load api, comment list size: " + dataCommentRecyclerViewAdapter.getItemCount());
 
+                                if (page == Constant.INITIAL_PAGE) {
+                                    commentRecyclerView.setAdapter(dataCommentRecyclerViewAdapter);
+
+                                    commentRecyclerView.setLayoutManager(linearLayoutManager);
+
+                                } else {
+                                    dataCommentRecyclerViewAdapter.notifyItemRangeInserted(currentSize, response.getCommentList().size());
+
+                                }
                             }
-
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable error) throws Exception {
-                            Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.error_message) + error);
+                            Log.d("ZingDemoApi", getString(R.string.error_message) + error);
                         }
                     }, new Action() {
                         @Override
                         public void run() throws Exception {
-                            Log.d(String.valueOf(R.string.app_tag), String.valueOf(R.string.comment_complete_message));
+                            Log.d("ZingDemoApi", getString(R.string.comment_complete_message));
                         }
                     });
         }
-        isLoad = true;
     }
 
     @Override

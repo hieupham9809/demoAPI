@@ -19,4 +19,5 @@
     <string name="error_message">Error:</string>
     <string name="comment_complete_message">Completed load comment API</string>
     <string name="programinfo_complete_message">Completed ProgramInfoActivity API</string>
+    <string name="end_comment">Không còn bình luận nào khác</string>
 </resources>

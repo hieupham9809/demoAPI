@@ -28,7 +28,7 @@ public class GlideRequest {
     public void loadImage(RequestManager requestManager, String url, ImageView imageView){
         requestManager
                 .load(url)
-                .error(R.drawable.white_screen_of_death)
+                //.error(R.drawable.null_image)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView);
     }

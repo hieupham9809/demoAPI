@@ -16,6 +16,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     private boolean loading = true;
     // Sets the starting page index
     //private int startingPageIndex = 0;
+    //private boolean isEnd = false;
 
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
@@ -108,6 +109,12 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
             onLoadMore();
             loading = true;
         }
+
+        // Check whether user scroll to the end of list
+//        if (!isEnd && (firstVisibleItem + visibleItemCount) == totalItemCount){
+//            onLoadFinal();
+//            isEnd = true;
+//        }
     }
 
     // Call this method whenever performing new searches
@@ -118,5 +125,5 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     // Defines the process for actually loading more data based on page
     public abstract void onLoadMore();
-
+    //public abstract void onLoadFinal();
 }

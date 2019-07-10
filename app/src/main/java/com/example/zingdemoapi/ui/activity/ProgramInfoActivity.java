@@ -57,7 +57,10 @@ public class ProgramInfoActivity extends BaseActivity {
 
         requestManager = Glide.with(this);
         Intent intent = getIntent();
-        id = intent.getIntExtra(Constant.PROGRAMID, 0);
+        if (intent.hasExtra(Constant.PROGRAMID)) {
+            id = intent.getIntExtra(Constant.PROGRAMID, 0);
+        }
+
         initRecyclerView();
 
         loadProgramInfo(id);
