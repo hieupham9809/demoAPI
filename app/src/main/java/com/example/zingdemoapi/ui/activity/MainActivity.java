@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -74,9 +75,11 @@ public class MainActivity extends BaseActivity {
     private void handleResponse(Home home) {
         DataAdapter mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
         mRecyclerView.setAdapter(mAdapter);
+
         Log.d("ZingDemoApi", "GET RESPONSE" + home.size());
 
     }
+
 
     private void handleError(Throwable error) {
         Toast.makeText(this, "Error" + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

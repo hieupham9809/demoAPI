@@ -18,6 +18,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/t_n"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/banner_image" />
 
@@ -156,7 +157,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/series_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:fillViewport="true"
             android:scrollbars="vertical"
             app:layout_constraintTop_toBottomOf="@+id/tv_series"

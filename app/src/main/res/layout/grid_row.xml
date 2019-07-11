@@ -9,12 +9,47 @@
     <!--&gt;-->
 
 <!--</GridView>-->
+<!--<LinearLayout android:layout_width="match_parent"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+    <!--<TextView-->
+        <!--android:id="@+id/tv_type_title_video"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold"-->
+        <!--/>-->
+    <!--&lt;!&ndash;<com.example.zingdemoapi.ui.view.ExpandableHeightGridView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/grid_view"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_margin="7dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:horizontalSpacing="2dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:verticalSpacing="2dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:isScrollContainer="false"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:numColumns="2"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:stretchMode="columnWidth"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+    <!--<com.example.zingdemoapi.ui.view.ExpandableHeightGridView android:id="@+id/grid_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_margin="7dp"-->
+        <!--android:horizontalSpacing="2dp"-->
+        <!--android:verticalSpacing="2dp"-->
+        <!--android:isScrollContainer="false"-->
+        <!--android:numColumns="2"-->
+        <!--android:stretchMode="columnWidth"-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android" />-->
+<!--</LinearLayout>-->
 <LinearLayout android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
-        android:id="@+id/tv_type_title"
+        android:id="@+id/tv_type_title_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -25,6 +60,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:layout_margin="7dp"
     android:horizontalSpacing="2dp"
     android:isScrollContainer="false"
     android:numColumns="2"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
@@ -17,7 +18,9 @@ import java.util.List;
 public class VideoViewHolder extends BaseHomeViewHolder<Video> {
 
     protected RecyclerView recyclerView;
+
     protected ExpandableHeightGridView gridView;
+    //private GridView gridView;
     protected Context context;
     protected GridViewAdapter gridViewAdapter;
     private TextView tvTitle;
@@ -38,8 +41,8 @@ public class VideoViewHolder extends BaseHomeViewHolder<Video> {
         super(itemView,mRequestManager);
 
         this.context = mContext;
-        gridView = itemView.findViewById(R.id.grid_view);
-        tvTitle = itemView.findViewById(R.id.tv_type_title);
+        gridView = (ExpandableHeightGridView) itemView.findViewById(R.id.grid_view);
+        tvTitle = itemView.findViewById(R.id.tv_type_title_video);
     }
 
 }

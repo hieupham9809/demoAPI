@@ -47,7 +47,7 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row, parent, false);
             return new BannerBoxViewHolder(view, context, requestManager);
         } else if (viewType == Type.PROGRAM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_row, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.program_recycler_row, parent, false);
             return new ProgramGridViewHolder(view, context, requestManager);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_row, parent, false);
@@ -65,27 +65,28 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
     @Override
     public void onBindViewHolder(BaseHomeViewHolder holder, int position) {
-        int type = getItemViewType(position);
 
-        switch (type) {
-            case Type.BANNER:
-                List<Banner> banners = homedata.get(position).getPageList();
-                BannerBoxViewHolder bannerBoxViewHolder = ((BannerBoxViewHolder) holder);
-                bannerBoxViewHolder.setData(banners);
-                break;
+            int type = getItemViewType(position);
 
-            case Type.PROGRAM:
-                ProgramGridViewHolder programGridViewHolder = (ProgramGridViewHolder)holder;
-                programGridViewHolder.setData(homedata.get(position).<Program>getPageList(), homedata.get(position).getTitle());
-                break;
-            case Type.VIDEO:
-                VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
-                videoViewHolder.setData(homedata.get(position).<Video>getPageList(), homedata.get(position).getTitle());
-                break;
+            switch (type) {
+                case Type.BANNER:
+                    List<Banner> banners = homedata.get(position).getPageList();
+                    BannerBoxViewHolder bannerBoxViewHolder = ((BannerBoxViewHolder) holder);
+                    bannerBoxViewHolder.setData(banners);
+                    break;
 
-            default:
-                break;
-        }
+                case Type.PROGRAM:
+                    ProgramGridViewHolder programGridViewHolder = (ProgramGridViewHolder) holder;
+                    programGridViewHolder.setData(homedata.get(position).<Program>getPageList(), homedata.get(position).getTitle());
+                    break;
+                case Type.VIDEO:
+                    VideoViewHolder videoViewHolder = (VideoViewHolder) holder;
+                    videoViewHolder.setData(homedata.get(position).<Video>getPageList(), homedata.get(position).getTitle());
+                    break;
+
+                default:
+                    break;
+            }
 
 
     }
