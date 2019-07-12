@@ -44,13 +44,13 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
 
         if (viewType == Type.BANNER) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewpager_row, parent, false);
             return new BannerBoxViewHolder(view, context, requestManager);
         } else if (viewType == Type.PROGRAM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.program_recycler_row, parent, false);
             return new ProgramGridViewHolder(view, context, requestManager);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_row, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.program_recycler_row, parent, false);
             return new VideoViewHolder(view, context, requestManager);
         }
 

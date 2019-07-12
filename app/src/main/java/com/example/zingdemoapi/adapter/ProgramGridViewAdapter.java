@@ -56,7 +56,7 @@ public class ProgramGridViewAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         TitleImageViewHolder titleImageViewHolder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.child_recycler_row, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.program_recycler_item, parent, false);
             titleImageViewHolder = new TitleImageViewHolder(convertView);
             convertView.setTag(titleImageViewHolder);
         } else {

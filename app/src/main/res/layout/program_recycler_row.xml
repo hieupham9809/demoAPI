@@ -10,22 +10,11 @@
         android:textSize="18sp"
         android:textStyle="bold"
         />
-    <!--<com.example.zingdemoapi.ui.view.ExpandableHeightGridView-->
-    <!--android:id="@+id/grid_view"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:gravity="center"-->
-    <!--android:layout_margin="7dp"-->
-    <!--android:horizontalSpacing="2dp"-->
-    <!--android:verticalSpacing="2dp"-->
-    <!--android:isScrollContainer="false"-->
-    <!--android:numColumns="2"-->
-    <!--android:stretchMode="columnWidth"-->
-    <!--/>-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_program"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_margin="2dp"
 

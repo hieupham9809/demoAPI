@@ -79,9 +79,9 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(programRecyclerViewAdapter);
-        recyclerView.addOnItemTouchListener(mScrollTouchListener);
+        // ** To allow nested scroll
+        //recyclerView.addOnItemTouchListener(mScrollTouchListener);
 
-        //gridView.setExpanded(true);
 
     }
 }

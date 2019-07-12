@@ -54,7 +54,7 @@ public class GridViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         GridViewItemViewHolder gridViewItemViewHolder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.child_recycler_row, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.program_recycler_item, parent, false);
             gridViewItemViewHolder = new GridViewItemViewHolder(convertView);
             convertView.setTag(gridViewItemViewHolder);
         } else {

@@ -21,7 +21,7 @@ public class ChildRecyclerViewAdapter extends RecyclerView.Adapter<ChildRecycler
     @NonNull
     @Override
     public ChildRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.child_recycler_row, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.program_recycler_item, viewGroup, false);
         return new ChildRecyclerViewHolder(view);
     }
 
