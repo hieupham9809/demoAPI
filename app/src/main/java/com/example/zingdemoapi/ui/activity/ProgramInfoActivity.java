@@ -130,14 +130,14 @@ public class ProgramInfoActivity extends BaseActivity {
         artistCustomView.setArtistList(programInfo.getArtists());
         Log.d("ZingDemoApi", "pass artist list");
 
-        Canvas canvas = new Canvas();
+        //Canvas canvas = new Canvas();
         //artistCustomView.draw(canvas);
         //artistCustomView.invalidate();
         SeriesRecyclerViewAdapter seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), this, requestManager);
         serieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         serieRecyclerView.setAdapter(seriesRecyclerViewAdapter);
 
-        artistCustomView.mInvalidate();
+        //artistCustomView.mInvalidate();
     }
 
     private String getGenre(ProgramInfo programInfo) {

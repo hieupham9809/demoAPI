@@ -12,26 +12,20 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Artist;
 import com.example.zingdemoapi.datamodel.Constant;
-import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +33,8 @@ import java.util.List;
 public class ArtistCustomView extends View {
     private List<Artist> artistList;
     private List<Bitmap> bitmapList = new ArrayList<>();
-    private List<String> nameList = new ArrayList<>();
-
-    private int id;
+    private String[] nameList;
+    private Bitmap[] bitmaps;
     private Paint paint;
     private TextPaint textPaint;
     private final int NUM_COLUMN = 3;
@@ -54,19 +47,22 @@ public class ArtistCustomView extends View {
     RectF rectF = new RectF();
 
     public void mInvalidate() {
-        while (true) {
-            Log.d("ZingDemoApi", "bitmaplist: " + bitmapList.size() + "artistlist: " + artistList.size());
-            if (bitmapList.size() >= artistList.size()) {
-                break;
-            }
-        }
+//        while (true) {
+//            Log.d("ZingDemoApi", "bitmaplist: " + bitmapList.size() + "artistlist: " + artistList.size());
+//            if (bitmapList.size() >= artistList.size()) {
+//                break;
+//            }
+//        }
         this.invalidate();
     }
 
     public void setArtistList(final List<Artist> artistList) {
         this.artistList = artistList;
+        bitmaps = new Bitmap[artistList.size()];
+        nameList = new String[artistList.size()];
         for (int i = 0; i < artistList.size(); i++) {
             final int j = i;
+            nameList[j] = artistList.get(j).getName();
             Glide.with(context)
                     .asBitmap()
                     .load(artistList.get(i).getAvatar())
@@ -75,16 +71,17 @@ public class ArtistCustomView extends View {
                                   @Override
                                   public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
                                       //Toast.makeText(context,"error",Toast.LENGTH_SHORT).show();
-                                      bitmapList.add(getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.default_program), 1000));
-                                      nameList.add(artistList.get(j).getName());
+
+                                      bitmaps[j] = getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.error_load_image), 1000);
+                                      mInvalidate();
                                       return false;
                                   }
 
                                   @Override
                                   public boolean onResourceReady(Bitmap resource, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
-                                      bitmapList.add(getRoundedBitmap(resource, 1000));
-                                      nameList.add(artistList.get(j).getName());
-
+                                      //bitmapList.add(getRoundedBitmap(resource, 1000));
+                                      bitmaps[j] = getRoundedBitmap(resource, 1000);
+                                      mInvalidate();
                                       Log.d("ZingDemoApi", "put image bitmap to list");
 
                                       return false;
@@ -167,11 +164,9 @@ public class ArtistCustomView extends View {
         super.onDraw(canvas);
         float distance = getWidth() * 1.0f / NUM_COLUMN;
         int padding = 50;
-        //canvas = new Canvas(output);
 
-        if (bitmapList.size() != 0) {
+        if (bitmaps != null) {
 
-            //float distance = getWidth() * 1.0f / NUM_COLUMN;
             int artistListLength = artistList.size();
 
             for (int i = 0; i < artistListLength; i++) {
@@ -185,12 +180,21 @@ public class ArtistCustomView extends View {
 
                 Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
                         + "right " + rectF.right + "bottom " + rectF.bottom);
-
-                canvas.drawBitmap(bitmapList.get(i), null, rectF, paint);
-                String name = nameList.get(i);
-                canvas.drawText(nameList.get(i)
+                if (bitmaps[i] != null){
+                    canvas.drawBitmap(bitmaps[i], null, rectF, paint);
+                } else {
+                    canvas.drawBitmap(
+                            getRoundedBitmap(
+                                    BitmapFactory.decodeResource(getResources(), R.drawable.null_artist), 1000)
+                            , null
+                            , rectF
+                            , paint);
+                }
+                //canvas.drawBitmap(bitmapList.get(i), null, rectF, paint);
+                String name = nameList[i];
+                canvas.drawText(name
                         , 0
-                        , (name.length() < 18) ? name.length() : 18
+                        , (name.length() < Constant.MAX_LENGTH_FOR_TEXT) ? name.length() : Constant.MAX_LENGTH_FOR_TEXT
                         , (name.length() < 12) ? (rectF.left - 10 +45):rectF.left - 10, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
 
             }
@@ -199,6 +203,5 @@ public class ArtistCustomView extends View {
         } else {
             Log.d("ZingDemoApi", "has not set");
         }
-//        canvas.drawPoint(100, 100, paint);
     }
 }
