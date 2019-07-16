@@ -8,6 +8,8 @@ public class Constant {
 
     public static final int INITIAL_PAGE = 1;
     public static final int END_COMMENT_VIEW_TYPE = -1;
+
+    public static final float NAME_ARTIST_TEXT_SIZE = 40f;
     private Constant(){
 
     }

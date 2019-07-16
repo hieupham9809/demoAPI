@@ -1,6 +1,7 @@
 package com.example.zingdemoapi.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.example.zingdemoapi.datamodel.Genre;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
 import com.example.zingdemoapi.request.GlideRequest;
 import com.example.zingdemoapi.request.RestApi;
+import com.example.zingdemoapi.ui.view.ArtistCustomView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -43,7 +45,8 @@ public class ProgramInfoActivity extends BaseActivity {
     private TextView tvRating;
     private TextView tvReleaseDate;
 
-    private RecyclerView artistRecyclerView;
+//    private RecyclerView artistRecyclerView;
+    private ArtistCustomView artistCustomView;
     private RecyclerView serieRecyclerView;
 
     private int id;
@@ -92,9 +95,9 @@ public class ProgramInfoActivity extends BaseActivity {
             }
         });
 
-        artistRecyclerView = findViewById(R.id.artist_recycler_view);
+//        artistRecyclerView = findViewById(R.id.artist_recycler_view);
         serieRecyclerView = findViewById(R.id.series_recycler_view);
-
+        artistCustomView = findViewById(R.id.artist_custom_view);
         //dataCommentRecyclerViewAdapter = new DataCommentRecyclerViewAdapter(requestManager);
 
     }
@@ -120,14 +123,21 @@ public class ProgramInfoActivity extends BaseActivity {
             }
         });
 
-        ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), this, requestManager);
-        artistRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        artistRecyclerView.setAdapter(artistRecyclerViewAdapter);
+//        ArtistRecyclerViewAdapter artistRecyclerViewAdapter = new ArtistRecyclerViewAdapter(programInfo.getArtists(), this, requestManager);
+//        artistRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        artistRecyclerView.setAdapter(artistRecyclerViewAdapter);
+        //ArtistCustomView artistCustomView = new ArtistCustomView(this, programInfo.getArtists());
+        artistCustomView.setArtistList(programInfo.getArtists());
+        Log.d("ZingDemoApi", "pass artist list");
 
+        Canvas canvas = new Canvas();
+        //artistCustomView.draw(canvas);
+        //artistCustomView.invalidate();
         SeriesRecyclerViewAdapter seriesRecyclerViewAdapter = new SeriesRecyclerViewAdapter(programInfo.getSeries(), this, requestManager);
         serieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         serieRecyclerView.setAdapter(seriesRecyclerViewAdapter);
 
+        artistCustomView.mInvalidate();
     }
 
     private String getGenre(ProgramInfo programInfo) {
