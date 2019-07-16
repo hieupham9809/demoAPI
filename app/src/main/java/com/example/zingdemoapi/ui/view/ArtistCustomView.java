@@ -39,6 +39,8 @@ import java.util.List;
 public class ArtistCustomView extends View {
     private List<Artist> artistList;
     private List<Bitmap> bitmapList = new ArrayList<>();
+    private List<String> nameList = new ArrayList<>();
+
     private int id;
     private Paint paint;
     private TextPaint textPaint;
@@ -61,9 +63,10 @@ public class ArtistCustomView extends View {
         this.invalidate();
     }
 
-    public void setArtistList(List<Artist> artistList) {
+    public void setArtistList(final List<Artist> artistList) {
         this.artistList = artistList;
         for (int i = 0; i < artistList.size(); i++) {
+            final int j = i;
             Glide.with(context)
                     .asBitmap()
                     .load(artistList.get(i).getAvatar())
@@ -73,12 +76,15 @@ public class ArtistCustomView extends View {
                                   public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
                                       //Toast.makeText(context,"error",Toast.LENGTH_SHORT).show();
                                       bitmapList.add(getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.default_program), 1000));
+                                      nameList.add(artistList.get(j).getName());
                                       return false;
                                   }
 
                                   @Override
                                   public boolean onResourceReady(Bitmap resource, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
                                       bitmapList.add(getRoundedBitmap(resource, 1000));
+                                      nameList.add(artistList.get(j).getName());
+
                                       Log.d("ZingDemoApi", "put image bitmap to list");
 
                                       return false;
@@ -124,9 +130,9 @@ public class ArtistCustomView extends View {
     public ArtistCustomView(Context context) {
         super(context);
         this.context = context;
+        //setBackgroundResource(R.drawable.background_artist_list);
         initPaint();
         initTextPaint();
-
     }
 
     public ArtistCustomView(Context context, AttributeSet attrs) {
@@ -181,11 +187,11 @@ public class ArtistCustomView extends View {
                         + "right " + rectF.right + "bottom " + rectF.bottom);
 
                 canvas.drawBitmap(bitmapList.get(i), null, rectF, paint);
-                String name = artistList.get(i).getName();
-                canvas.drawText(artistList.get(i).getName()
+                String name = nameList.get(i);
+                canvas.drawText(nameList.get(i)
                         , 0
-                        , (name.length() < 15) ? name.length() : 15
-                        , rectF.left, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
+                        , (name.length() < 18) ? name.length() : 18
+                        , (name.length() < 12) ? (rectF.left - 10 +45):rectF.left - 10, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
 
             }
 
