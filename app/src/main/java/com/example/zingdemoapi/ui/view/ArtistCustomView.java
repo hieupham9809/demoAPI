@@ -1,13 +1,11 @@
 package com.example.zingdemoapi.ui.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -26,6 +24,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Artist;
 import com.example.zingdemoapi.datamodel.Constant;
+import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,8 @@ public class ArtistCustomView extends View {
 //                break;
 //            }
 //        }
+        //requestLayout();
+
         this.invalidate();
     }
 
@@ -71,18 +72,28 @@ public class ArtistCustomView extends View {
                                   @Override
                                   public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
                                       //Toast.makeText(context,"error",Toast.LENGTH_SHORT).show();
-
                                       bitmaps[j] = getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.error_load_image), 1000);
-                                      mInvalidate();
+                                      ((ProgramInfoActivity)context).runOnUiThread(new Runnable() {
+
+                                          @Override
+                                          public void run() {
+                                              mInvalidate();
+                                          }
+                                      });
                                       return false;
                                   }
 
                                   @Override
                                   public boolean onResourceReady(Bitmap resource, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
-                                      //bitmapList.add(getRoundedBitmap(resource, 1000));
                                       bitmaps[j] = getRoundedBitmap(resource, 1000);
-                                      mInvalidate();
-                                      Log.d("ZingDemoApi", "put image bitmap to list");
+                                      ((ProgramInfoActivity)context).runOnUiThread(new Runnable() {
+
+                                          @Override
+                                          public void run() {
+                                              mInvalidate();
+                                          }
+                                      });
+                                      //Log.d("ZingDemoApi", "put image bitmap to list");
 
                                       return false;
                                   }
@@ -90,6 +101,7 @@ public class ArtistCustomView extends View {
                     ).submit();
 
         }
+        requestLayout();
 
     }
 
@@ -143,9 +155,7 @@ public class ArtistCustomView extends View {
 //        }
     }
 
-    public List<Artist> getArtistList() {
-        return artistList;
-    }
+
 
     private void initPaint() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -159,6 +169,18 @@ public class ArtistCustomView extends View {
         textPaint.setTextSize(Constant.NAME_ARTIST_TEXT_SIZE);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (artistList != null){
+            float distance = getWidth() * 1.0f / NUM_COLUMN;
+            int rows = (artistList.size() % NUM_COLUMN == 0)?(artistList.size() / NUM_COLUMN):(artistList.size() / NUM_COLUMN + 1);
+            setMeasuredDimension(getWidth(), rows * Math.round(distance));
+            //super.onMeasure(getWidth(), rows * Math.round(distance));
+            Log.d("ZingDemoApi", "distance " + distance);
+
+        }
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -178,8 +200,8 @@ public class ArtistCustomView extends View {
                 rectF.right = X_INIT + xStep * distance + distance - padding;
                 rectF.bottom = Y_INIT + yStep * distance + distance - padding;
 
-                Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
-                        + "right " + rectF.right + "bottom " + rectF.bottom);
+//                Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
+//                        + "right " + rectF.right + "bottom " + rectF.bottom);
                 if (bitmaps[i] != null){
                     canvas.drawBitmap(bitmaps[i], null, rectF, paint);
                 } else {
