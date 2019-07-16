@@ -1,6 +1,7 @@
 package com.example.zingdemoapi.ui.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -34,6 +35,7 @@ public class ArtistCustomView extends View {
     private List<Bitmap> bitmapList = new ArrayList<>();
     private String[] nameList;
     private Bitmap[] bitmaps;
+    private Bitmap nullArtist;
     private Paint paint;
     private TextPaint textPaint;
     private final int NUM_COLUMN = 3;
@@ -60,6 +62,9 @@ public class ArtistCustomView extends View {
     public void setArtistList(final List<Artist> artistList) {
         this.artistList = artistList;
         bitmaps = new Bitmap[artistList.size()];
+        nullArtist = getRoundedBitmap(
+                BitmapFactory.decodeResource(getResources(), R.drawable.null_artist)
+                , 1000);
         nameList = new String[artistList.size()];
         for (int i = 0; i < artistList.size(); i++) {
             final int j = i;
@@ -73,7 +78,7 @@ public class ArtistCustomView extends View {
                                   public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
                                       //Toast.makeText(context,"error",Toast.LENGTH_SHORT).show();
                                       bitmaps[j] = getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.error_load_image), 1000);
-                                      ((ProgramInfoActivity)context).runOnUiThread(new Runnable() {
+                                      ((ProgramInfoActivity) context).runOnUiThread(new Runnable() {
 
                                           @Override
                                           public void run() {
@@ -86,7 +91,7 @@ public class ArtistCustomView extends View {
                                   @Override
                                   public boolean onResourceReady(Bitmap resource, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
                                       bitmaps[j] = getRoundedBitmap(resource, 1000);
-                                      ((ProgramInfoActivity)context).runOnUiThread(new Runnable() {
+                                      ((ProgramInfoActivity) context).runOnUiThread(new Runnable() {
 
                                           @Override
                                           public void run() {
@@ -140,21 +145,20 @@ public class ArtistCustomView extends View {
         super(context);
         this.context = context;
         //setBackgroundResource(R.drawable.background_artist_list);
-        initPaint();
-        initTextPaint();
+//        initPaint();
+//        initTextPaint();
     }
 
     public ArtistCustomView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initPaint();
-        initTextPaint();
+        initTextPaint(attrs);
 //        Intent intent = ((ProgramInfoActivity) context).getIntent();
 //        if (intent.hasExtra(Constant.PROGRAMID)) {
 //            id = intent.getIntExtra(Constant.PROGRAMID, -1);
 //        }
     }
-
 
 
     private void initPaint() {
@@ -163,24 +167,32 @@ public class ArtistCustomView extends View {
 
     }
 
-    private void initTextPaint() {
+    private void initTextPaint(AttributeSet attributeSet) {
+        if (attributeSet == null){
+            return;
+        }
+        TypedArray typeArray = context.obtainStyledAttributes(attributeSet, R.styleable.ArtistCustomView);
+        int textColor = typeArray.getColor(R.styleable.ArtistCustomView_artist_name_text_color, Color.parseColor("#483D8B"));
+
         textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(Color.parseColor("#483D8B"));
+        textPaint.setColor(textColor);
         textPaint.setTextSize(Constant.NAME_ARTIST_TEXT_SIZE);
+        typeArray.recycle();
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (artistList != null){
+        if (artistList != null) {
             float distance = getWidth() * 1.0f / NUM_COLUMN;
-            int rows = (artistList.size() % NUM_COLUMN == 0)?(artistList.size() / NUM_COLUMN):(artistList.size() / NUM_COLUMN + 1);
+            int rows = (artistList.size() % NUM_COLUMN == 0) ? (artistList.size() / NUM_COLUMN) : (artistList.size() / NUM_COLUMN + 1);
             setMeasuredDimension(getWidth(), rows * Math.round(distance));
             //super.onMeasure(getWidth(), rows * Math.round(distance));
             Log.d("ZingDemoApi", "distance " + distance);
 
         }
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -202,12 +214,11 @@ public class ArtistCustomView extends View {
 
 //                Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
 //                        + "right " + rectF.right + "bottom " + rectF.bottom);
-                if (bitmaps[i] != null){
+                if (bitmaps[i] != null) {
                     canvas.drawBitmap(bitmaps[i], null, rectF, paint);
                 } else {
                     canvas.drawBitmap(
-                            getRoundedBitmap(
-                                    BitmapFactory.decodeResource(getResources(), R.drawable.null_artist), 1000)
+                            nullArtist
                             , null
                             , rectF
                             , paint);
@@ -217,11 +228,11 @@ public class ArtistCustomView extends View {
                 canvas.drawText(name
                         , 0
                         , (name.length() < Constant.MAX_LENGTH_FOR_TEXT) ? name.length() : Constant.MAX_LENGTH_FOR_TEXT
-                        , (name.length() < 12) ? (rectF.left - 10 +45):rectF.left - 10, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
+                        , (name.length() < 12) ? (rectF.left - 10 + 45) : rectF.left - 10, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
 
             }
 
-           //bitmapList.clear();
+            //bitmapList.clear();
         } else {
             Log.d("ZingDemoApi", "has not set");
         }
