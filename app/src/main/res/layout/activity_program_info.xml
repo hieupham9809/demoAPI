@@ -145,7 +145,7 @@
         <com.example.zingdemoapi.ui.view.ArtistCustomView
             android:id="@+id/artist_custom_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             app:artist_name_text_color="#ff9005"
             app:layout_constraintTop_toBottomOf="@+id/tv_artist" />
 

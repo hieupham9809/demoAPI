@@ -12,6 +12,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
+import android.text.Layout;
+import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -27,35 +29,27 @@ import com.example.zingdemoapi.datamodel.Artist;
 import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistCustomView extends View {
     private List<Artist> artistList;
-    private List<Bitmap> bitmapList = new ArrayList<>();
-    private String[] nameList;
     private Bitmap[] bitmaps;
+    private StaticLayout[] staticLayouts;
+
     private Bitmap nullArtist;
-    private Paint paint;
+    private Paint bitmapPaint;
     private TextPaint textPaint;
     private final int NUM_COLUMN = 3;
+
+    private int maxHeightOfStaticLayout;
 
     private Context context;
     private final float X_INIT = 0.0f;
     private final float Y_INIT = 0.0f;
 
-
     RectF rectF = new RectF();
 
     public void mInvalidate() {
-//        while (true) {
-//            Log.d("ZingDemoApi", "bitmaplist: " + bitmapList.size() + "artistlist: " + artistList.size());
-//            if (bitmapList.size() >= artistList.size()) {
-//                break;
-//            }
-//        }
-        //requestLayout();
-
         this.invalidate();
     }
 
@@ -65,10 +59,16 @@ public class ArtistCustomView extends View {
         nullArtist = getRoundedBitmap(
                 BitmapFactory.decodeResource(getResources(), R.drawable.null_artist)
                 , 1000);
-        nameList = new String[artistList.size()];
+        staticLayouts = new StaticLayout[artistList.size()];
         for (int i = 0; i < artistList.size(); i++) {
             final int j = i;
-            nameList[j] = artistList.get(j).getName();
+            staticLayouts[j] = new StaticLayout(artistList.get(j).getName()
+                    , textPaint
+                    , Math.round(getWidth() * 1.0f / NUM_COLUMN)
+                    , Layout.Alignment.ALIGN_CENTER
+                    , 1.0f
+                    , 0.0f
+                    , false);
             Glide.with(context)
                     .asBitmap()
                     .load(artistList.get(i).getAvatar())
@@ -106,10 +106,19 @@ public class ArtistCustomView extends View {
                     ).submit();
 
         }
+        maxHeightOfStaticLayout = findMaxHeightOfStaticLayout(staticLayouts);
         requestLayout();
 
     }
-
+    private int findMaxHeightOfStaticLayout(StaticLayout[] staticLayouts){
+        int height = 0;
+        for (int i = 0; i < staticLayouts.length; i++){
+            if (staticLayouts[i].getHeight() > height){
+                height = staticLayouts[i].getHeight();
+            }
+        }
+        return height;
+    }
     public static Bitmap getRoundedBitmap(Bitmap bitmap, int cornerRadius) {
 
         if (bitmap == null) {
@@ -144,15 +153,13 @@ public class ArtistCustomView extends View {
     public ArtistCustomView(Context context) {
         super(context);
         this.context = context;
-        //setBackgroundResource(R.drawable.background_artist_list);
-//        initPaint();
-//        initTextPaint();
+
     }
 
     public ArtistCustomView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        initPaint();
+        initBitmapPaint();
         initTextPaint(attrs);
 //        Intent intent = ((ProgramInfoActivity) context).getIntent();
 //        if (intent.hasExtra(Constant.PROGRAMID)) {
@@ -161,9 +168,9 @@ public class ArtistCustomView extends View {
     }
 
 
-    private void initPaint() {
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(0XFF000000);
+    private void initBitmapPaint() {
+        bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        bitmapPaint.setColor(0XFF000000);
 
     }
 
@@ -186,9 +193,9 @@ public class ArtistCustomView extends View {
         if (artistList != null) {
             float distance = getWidth() * 1.0f / NUM_COLUMN;
             int rows = (artistList.size() % NUM_COLUMN == 0) ? (artistList.size() / NUM_COLUMN) : (artistList.size() / NUM_COLUMN + 1);
-            setMeasuredDimension(getWidth(), rows * Math.round(distance));
+            setMeasuredDimension(getWidth(), rows * (Math.round(distance) + maxHeightOfStaticLayout));
             //super.onMeasure(getWidth(), rows * Math.round(distance));
-            Log.d("ZingDemoApi", "distance " + distance);
+            //Log.d("ZingDemoApi", "distance " + distance);
 
         }
     }
@@ -215,21 +222,28 @@ public class ArtistCustomView extends View {
 //                Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
 //                        + "right " + rectF.right + "bottom " + rectF.bottom);
                 if (bitmaps[i] != null) {
-                    canvas.drawBitmap(bitmaps[i], null, rectF, paint);
+                    canvas.drawBitmap(bitmaps[i], null, rectF, bitmapPaint);
                 } else {
                     canvas.drawBitmap(
                             nullArtist
                             , null
                             , rectF
-                            , paint);
+                            , bitmapPaint);
                 }
                 //canvas.drawBitmap(bitmapList.get(i), null, rectF, paint);
-                String name = nameList[i];
-                canvas.drawText(name
-                        , 0
-                        , (name.length() < Constant.MAX_LENGTH_FOR_TEXT) ? name.length() : Constant.MAX_LENGTH_FOR_TEXT
-                        , (name.length() < 12) ? (rectF.left - 10 + 45) : rectF.left - 10, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
 
+                StaticLayout mArtistNameStaticLayout = staticLayouts[i];
+                canvas.save();
+
+                // calculate x and y position where your text will be placed
+                canvas.translate(rectF.left - padding , rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE);
+                mArtistNameStaticLayout.draw(canvas);
+                canvas.restore();
+
+//                canvas.drawText(name
+//                        //, 0
+//                        //, (name.length() < Constant.MAX_LENGTH_FOR_TEXT) ? name.length() : Constant.MAX_LENGTH_FOR_TEXT
+//                        , rectF.left - padding + distance / 2 - textPaint.measureText(name) * 1.0f / 2, rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE, textPaint);
             }
 
             //bitmapList.clear();

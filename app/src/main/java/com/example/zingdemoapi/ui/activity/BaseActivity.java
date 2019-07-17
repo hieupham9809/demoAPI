@@ -1,5 +1,6 @@
 package com.example.zingdemoapi.ui.activity;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public class BaseActivity extends AppCompatActivity {
     protected final CompositeDisposable subscriptions = new CompositeDisposable();
+    protected ActionBar actionBar;
 
     public void subscribe(Observable observable, Consumer next, Consumer error, Action complete){
         Disposable disposable = observable
@@ -25,5 +27,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public void unsubscribe(){
         subscriptions.dispose();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

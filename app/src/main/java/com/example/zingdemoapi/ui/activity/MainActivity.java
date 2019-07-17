@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity {
         compositeDisposable = new CompositeDisposable();
         requestManager = Glide.with(this);
         initRecyclerView();
-        loadHome();
+        loadHomeObject();
 
     }
 
@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void loadHome() {
+    private void loadHomeObject() {
 
         subscribe(RestApi.getInstance().getHome()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -55,16 +55,16 @@ public class MainActivity extends BaseActivity {
                 , new Consumer<Home>() {
                     @Override
                     public void accept(Home response) throws Exception {
-
-                        MainActivity.this.handleResponse(response);
-
+                        MainActivity.this.setAdapterForHomeRecyclerView(response);
                     }
-                }, new Consumer<Throwable>() {
+                }
+                , new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable error) throws Exception {
                         MainActivity.this.handleError(error);
                     }
-                }, new Action() {
+                }
+                , new Action() {
                     @Override
                     public void run() throws Exception {
                         Log.d("ZingDemoApi", "Completed MainActivity API");
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    private void handleResponse(Home home) {
+    private void setAdapterForHomeRecyclerView(Home home) {
         DataAdapter mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
         mRecyclerView.setAdapter(mAdapter);
 

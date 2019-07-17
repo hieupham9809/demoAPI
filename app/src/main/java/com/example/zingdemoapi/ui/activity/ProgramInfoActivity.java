@@ -45,13 +45,12 @@ public class ProgramInfoActivity extends BaseActivity {
     private TextView tvRating;
     private TextView tvReleaseDate;
 
-//    private RecyclerView artistRecyclerView;
     private ArtistCustomView artistCustomView;
     private RecyclerView serieRecyclerView;
 
-    private int id;
+    private int mProgramId;
 
-    private Button btnLoad;
+    private Button btnLoadComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +60,25 @@ public class ProgramInfoActivity extends BaseActivity {
         requestManager = Glide.with(this);
         Intent intent = getIntent();
         if (intent.hasExtra(Constant.PROGRAMID)) {
-            id = intent.getIntExtra(Constant.PROGRAMID, 0);
+            mProgramId = intent.getIntExtra(Constant.PROGRAMID, 0);
         }
 
-        initRecyclerView();
+        initProgramInfoView();
 
-        loadProgramInfo(id);
-
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(intent.getStringExtra(Constant.TITLE));
         }
 
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadProgramInfo(mProgramId);
+    }
 
-    private void initRecyclerView() {
+    private void initProgramInfoView() {
         tvName = findViewById(R.id.tv_name);
         bannerImage = findViewById(R.id.banner_image);
         tvDescription = findViewById(R.id.tv_description);
@@ -87,13 +89,7 @@ public class ProgramInfoActivity extends BaseActivity {
         tvComment = findViewById(R.id.tv_comment);
         tvRating = findViewById(R.id.tv_rating);
         tvReleaseDate = findViewById(R.id.tv_release_date);
-        btnLoad = findViewById(R.id.btn_load_comment);
-        btnLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadComment();
-            }
-        });
+        btnLoadComment = findViewById(R.id.btn_load_comment);
 
 //        artistRecyclerView = findViewById(R.id.artist_recycler_view);
         serieRecyclerView = findViewById(R.id.series_recycler_view);
@@ -102,21 +98,21 @@ public class ProgramInfoActivity extends BaseActivity {
 
     }
 
-    public void setData(ProgramInfo mProgramInfo) {
+    public void setProgramInfoDataForView(ProgramInfo mProgramInfo) {
         programInfo = mProgramInfo;
         tvName.setText(programInfo.getName());
 
         GlideRequest.getInstance().loadImage(requestManager, programInfo.getBanner(), bannerImage, R.drawable.default_thumbnail);
         tvDescription.setText(programInfo.getDescription());
-        tvGenre.setText(String.format("%s    %s", tvGenre.getText(), getGenre(programInfo)));
-        tvLink.setText(String.format("%s    %s", tvLink.getText(), programInfo.getUrl()));
-        tvFormat.setText(String.format("%s    %s", tvFormat.getText(), programInfo.getFormat()));
-        tvListen.setText(String.format("%s    %s", tvListen.getText(), programInfo.getListen().toString()));
-        tvComment.setText(String.format("%s    %s", tvComment.getText(), programInfo.getComment().toString()));
-        tvRating.setText(String.format("%s    %s", tvRating.getText(), programInfo.getRating().toString()));
-        tvReleaseDate.setText(String.format("%s    %s", tvReleaseDate.getText(), programInfo.getReleaseDate()));
+        tvGenre.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvGenre.getText(), getGenre(programInfo)));
+        tvLink.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvLink.getText(), programInfo.getUrl()));
+        tvFormat.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvFormat.getText(), programInfo.getFormat()));
+        tvListen.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvListen.getText(), programInfo.getListen().toString()));
+        tvComment.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvComment.getText(), programInfo.getComment().toString()));
+        tvRating.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvRating.getText(), programInfo.getRating().toString()));
+        tvReleaseDate.setText(String.format(Constant.PROGRAM_INFO_CONTENT_FORMAT, tvReleaseDate.getText(), programInfo.getReleaseDate()));
 
-        btnLoad.setOnClickListener(new View.OnClickListener() {
+        btnLoadComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadComment();
@@ -156,23 +152,25 @@ public class ProgramInfoActivity extends BaseActivity {
 
     }
 
-    private void loadProgramInfo(int id) {
+    private void loadProgramInfo(int programId) {
 
-        subscribe(RestApi.getInstance().getProgramInfo(id)
+        subscribe(RestApi.getInstance().getProgramInfo(programId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                 , new Consumer<ProgramInfo>() {
                     @Override
                     public void accept(ProgramInfo response) throws Exception {
-                        setData(response);
+                        setProgramInfoDataForView(response);
                     }
-                }, new Consumer<Throwable>() {
+                }
+                , new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable error) throws Exception {
                         Log.d(getString(R.string.app_tag), getString(R.string.error_message) + error.getLocalizedMessage());
 
                     }
-                }, new Action() {
+                }
+                , new Action() {
                     @Override
                     public void run() throws Exception {
                         Log.d(getString(R.string.app_tag), getString(R.string.programinfo_complete_message));
@@ -182,14 +180,4 @@ public class ProgramInfoActivity extends BaseActivity {
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 }
