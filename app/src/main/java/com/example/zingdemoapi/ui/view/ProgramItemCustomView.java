@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -24,7 +26,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Constant;
-import com.example.zingdemoapi.ui.activity.MainActivity;
 
 
 public class ProgramItemCustomView extends View  {
@@ -40,14 +41,12 @@ public class ProgramItemCustomView extends View  {
     Bitmap nullImageProgram;
     StaticLayout titleStaticLayout;
 
-    private int screenWidth;
-
     private String title;
 
     public ProgramItemCustomView(Context context) {
         super(context);
         this.context = context;
-        nullImageProgram = BitmapFactory.decodeResource(getResources(), R.drawable.null_user1);
+        nullImageProgram = BitmapFactory.decodeResource(getResources(), R.drawable.default_program);
         initBitmapPaint();
 
     }
@@ -55,23 +54,14 @@ public class ProgramItemCustomView extends View  {
     public ProgramItemCustomView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        nullImageProgram = BitmapFactory.decodeResource(getResources(), R.drawable.null_artist);
+        nullImageProgram = BitmapFactory.decodeResource(getResources(), R.drawable.default_program);
         initBitmapPaint();
         initTextPaint(attrs);
 
 
     }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh){
-        this.screenWidth = w;
-        Log.d("ZingDemoApi", "onSizeChanged called");
-
-
-    }
-    private void mInvalidate(){
+    private void invalidateAndRequestLayout(){
         requestLayout();
-        //this.invalidate();
     }
     public void setImageAndTitle(String thumbnailUrl, final String title){
 
@@ -83,13 +73,13 @@ public class ProgramItemCustomView extends View  {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                         imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.error_load_image);
-                        ((MainActivity) context).runOnUiThread(new Runnable() {
-
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                mInvalidate();
+                                invalidateAndRequestLayout();
                             }
                         });
+
                         return false;
 
                     }
@@ -97,14 +87,13 @@ public class ProgramItemCustomView extends View  {
                     @Override
                     public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                         imageBitmap = resource;
-
-                        ((MainActivity) context).runOnUiThread(new Runnable() {
-
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                mInvalidate();
+                                invalidateAndRequestLayout();
                             }
                         });
+
                         return false;
                     }
                 }).submit();
@@ -171,7 +160,6 @@ public class ProgramItemCustomView extends View  {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.d("ZingDemoApi", "onMeasure called");
         int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
 
         if (imageBitmap != null && titleStaticLayout != null){

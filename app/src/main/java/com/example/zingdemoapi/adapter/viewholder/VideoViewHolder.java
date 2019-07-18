@@ -34,7 +34,7 @@ public class VideoViewHolder extends BaseHomeViewHolder<Video> {
             videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(context, requestManager);
 
         }
-        videoRecyclerViewAdapter.setmResources(list);
+        videoRecyclerViewAdapter.setListVideo(list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         recyclerView.setAdapter(videoRecyclerViewAdapter);
         recyclerView.setLayoutManager(gridLayoutManager);

@@ -75,7 +75,7 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
             programRecyclerViewAdapter = new ProgramRecyclerViewAdapter(context, requestManager);
 
         }
-        programRecyclerViewAdapter.setmResources(list, title);
+        programRecyclerViewAdapter.setProgramAndTitle(list, title);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(programRecyclerViewAdapter);

@@ -24,16 +24,16 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
     private List<Program> list;
     private String title;
     private Context context;
-    private LayoutInflater mLayoutInflater;
-    private RequestManager requestManager;
+//    private LayoutInflater mLayoutInflater;
+//    private RequestManager requestManager;
     public ProgramRecyclerViewAdapter(Context mContext, RequestManager mRequestManager) {
         this.context = mContext;
-        requestManager = mRequestManager;
+//        requestManager = mRequestManager;
     }
-    public void setmResources(List<Program> mList, String mTitle ) {
+    public void setProgramAndTitle(List<Program> mList, String mTitle ) {
         list = mList;
         title = mTitle;
-        mLayoutInflater = LayoutInflater.from(context);
+//        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @NonNull
@@ -44,18 +44,19 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TitleImageViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull TitleImageViewHolder viewHolder, int i) {
         viewHolder.programItemCustomView.setImageAndTitle(list.get(i).getThumbnail(), list.get(i).getTitle());
-        viewHolder.programItemCustomView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ProgramInfoActivity.class);
-                intent.putExtra(Constant.TITLE, title);
-                intent.putExtra(Constant.PROGRAMID, list.get(i).getId());
-                //Toast.makeText(context, "ID: " + list.get(position).getId(), Toast.LENGTH_SHORT).show();
-                context.startActivity(intent);
-            }
-        });
+        viewHolder.programItemCustomView.setTag(i);
+//        viewHolder.programItemCustomView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, ProgramInfoActivity.class);
+//                intent.putExtra(Constant.TITLE, title);
+//                intent.putExtra(Constant.PROGRAMID, list.get(i).getId());
+//                //Toast.makeText(context, "ID: " + list.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                context.startActivity(intent);
+//            }
+//        });
         //        GlideRequest.getInstance().loadImage(requestManager, list.get(i).getThumbnail(), viewHolder.childGridviewImage, R.drawable.default_thumbnail);
 //        viewHolder.childGridviewImage.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -84,6 +85,15 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
         TitleImageViewHolder(View view) {
             super(view);
             programItemCustomView = view.findViewById(R.id.program_item_custom_view);
+            programItemCustomView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ProgramInfoActivity.class);
+                    intent.putExtra(Constant.TITLE, title);
+                    intent.putExtra(Constant.PROGRAMID, list.get((int)programItemCustomView.getTag()).getId());
+                    context.startActivity(intent);
+                }
+            });
 //            childGridViewTitle = view.findViewById(R.id.child_recycler_title);
 //            childGridviewImage = view.findViewById(R.id.child_recycler_image);
         }

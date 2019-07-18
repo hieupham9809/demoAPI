@@ -21,16 +21,16 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     private List<Video> list;
     private String title;
     private Context context;
-    private LayoutInflater mLayoutInflater;
-    private RequestManager requestManager;
+//    private LayoutInflater mLayoutInflater;
+//    private RequestManager requestManager;
     public VideoRecyclerViewAdapter(Context mContext, RequestManager mRequestManager) {
         this.context = mContext;
-        requestManager = mRequestManager;
+//        requestManager = mRequestManager;
     }
-    public void setmResources(List<Video> mList ) {
+    public void setListVideo(List<Video> mList ) {
         list = mList;
 
-        mLayoutInflater = LayoutInflater.from(context);
+//        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @NonNull
