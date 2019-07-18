@@ -13,6 +13,11 @@ public class Constant {
 
     public static final float NAME_ARTIST_TEXT_SIZE = 40f;
 
+    public static final int NAME_PROGRAM_TEXT_PADDING_HEIGHT = 10;
+
+    public static final int NUM_COLUMN_ARTIST = 3;
+    public static final int NUM_COLUMN_PROGRAM_RECYCLER_VIEW = 2;
+
     public static final int MAX_LENGTH_FOR_ARTIST_NAME = 18;
     public static final int MAX_LENGTH_FOR_PADDING_TEXT = 12;
     private Constant(){

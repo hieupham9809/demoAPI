@@ -13,6 +13,7 @@ import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.datamodel.Video;
 import com.example.zingdemoapi.request.GlideRequest;
+import com.example.zingdemoapi.ui.view.ProgramItemCustomView;
 
 import java.util.List;
 
@@ -41,8 +42,9 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
     @Override
     public void onBindViewHolder(@NonNull VideoRecyclerViewAdapter.TitleImageViewHolder viewHolder, final int i) {
-        viewHolder.childGridViewTitle.setText(list.get(i).getTitle());
-        GlideRequest.getInstance().loadImage(requestManager, list.get(i).getThumbnail(), viewHolder.childGridviewImage, R.drawable.default_thumbnail);
+//        viewHolder.childGridViewTitle.setText(list.get(i).getTitle());
+//        GlideRequest.getInstance().loadImage(requestManager, list.get(i).getThumbnail(), viewHolder.childGridviewImage, R.drawable.default_thumbnail);
+        viewHolder.programItemCustomView.setImageAndTitle(list.get(i).getThumbnail(),list.get(i).getTitle());
 
     }
 
@@ -55,13 +57,15 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         }
     }
     public class TitleImageViewHolder extends RecyclerView.ViewHolder{
-        TextView childGridViewTitle;
-        ImageView childGridviewImage;
+//        TextView childGridViewTitle;
+//        ImageView childGridviewImage;
+        ProgramItemCustomView programItemCustomView;
 
         TitleImageViewHolder(View view) {
             super(view);
-            childGridViewTitle = view.findViewById(R.id.child_recycler_title);
-            childGridviewImage = view.findViewById(R.id.child_recycler_image);
+//            childGridViewTitle = view.findViewById(R.id.child_recycler_title);
+//            childGridviewImage = view.findViewById(R.id.child_recycler_image);
+            programItemCustomView = view.findViewById(R.id.program_item_custom_view);
         }
     }
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
-import com.example.zingdemoapi.adapter.GridViewAdapter;
+//import com.example.zingdemoapi.adapter.GridViewAdapter;
 import com.example.zingdemoapi.adapter.VideoRecyclerViewAdapter;
 import com.example.zingdemoapi.datamodel.Video;
 import com.example.zingdemoapi.ui.view.ExpandableHeightGridView;

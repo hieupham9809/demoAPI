@@ -3,4 +3,7 @@
     <declare-styleable name="ArtistCustomView">
         <attr name="artist_name_text_color" format="color"></attr>
     </declare-styleable>
+    <declare-styleable name="ProgramItemCustomView">
+        <attr name="program_title_text_color" format="color"></attr>
+    </declare-styleable>
 </resources>

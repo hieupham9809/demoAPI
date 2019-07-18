@@ -31,6 +31,8 @@ import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
 import java.util.List;
 
+import static com.example.zingdemoapi.datamodel.Constant.NUM_COLUMN_ARTIST;
+
 public class ArtistCustomView extends View {
     private List<Artist> artistList;
     private Bitmap[] bitmaps;
@@ -39,7 +41,6 @@ public class ArtistCustomView extends View {
     private Bitmap nullArtist;
     private Paint bitmapPaint;
     private TextPaint textPaint;
-    private final int NUM_COLUMN = 3;
 
     private int maxHeightOfStaticLayout;
 
@@ -64,7 +65,7 @@ public class ArtistCustomView extends View {
             final int j = i;
             staticLayouts[j] = new StaticLayout(artistList.get(j).getName()
                     , textPaint
-                    , Math.round(getWidth() * 1.0f / NUM_COLUMN)
+                    , Math.round(getWidth() * 1.0f / NUM_COLUMN_ARTIST)
                     , Layout.Alignment.ALIGN_CENTER
                     , 1.0f
                     , 0.0f
@@ -191,9 +192,9 @@ public class ArtistCustomView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (artistList != null) {
-            float distance = getWidth() * 1.0f / NUM_COLUMN;
-            int rows = (artistList.size() % NUM_COLUMN == 0) ? (artistList.size() / NUM_COLUMN) : (artistList.size() / NUM_COLUMN + 1);
-            setMeasuredDimension(getWidth(), rows * (Math.round(distance) + maxHeightOfStaticLayout));
+            float distance = getWidth() * 1.0f / NUM_COLUMN_ARTIST;
+            int rows = (artistList.size() % NUM_COLUMN_ARTIST == 0) ? (artistList.size() / NUM_COLUMN_ARTIST) : (artistList.size() / NUM_COLUMN_ARTIST + 1);
+            setMeasuredDimension(getWidth(), rows * (Math.round(distance) + maxHeightOfStaticLayout) + maxHeightOfStaticLayout);
             //super.onMeasure(getWidth(), rows * Math.round(distance));
             //Log.d("ZingDemoApi", "distance " + distance);
 
@@ -203,7 +204,7 @@ public class ArtistCustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float distance = getWidth() * 1.0f / NUM_COLUMN;
+        float distance = getWidth() * 1.0f / NUM_COLUMN_ARTIST;
         int padding = 50;
 
         if (bitmaps != null) {
@@ -211,13 +212,13 @@ public class ArtistCustomView extends View {
             int artistListLength = artistList.size();
 
             for (int i = 0; i < artistListLength; i++) {
-                int xStep = ((i + 1) % NUM_COLUMN == 0) ? (NUM_COLUMN - 1) : ((i + 1) % NUM_COLUMN - 1);
-                int yStep = ((i + 1) % NUM_COLUMN == 0) ? ((i + 1) / NUM_COLUMN - 1) : ((i + 1) / NUM_COLUMN);
+                int xStep = ((i + 1) % NUM_COLUMN_ARTIST == 0) ? (NUM_COLUMN_ARTIST - 1) : ((i + 1) % NUM_COLUMN_ARTIST - 1);
+                int yStep = ((i + 1) % NUM_COLUMN_ARTIST == 0) ? ((i + 1) / NUM_COLUMN_ARTIST - 1) : ((i + 1) / NUM_COLUMN_ARTIST);
 
                 rectF.left = X_INIT + xStep * distance + padding;
-                rectF.top = Y_INIT + yStep * distance + padding;
+                rectF.top = Y_INIT + yStep * distance + padding + maxHeightOfStaticLayout;
                 rectF.right = X_INIT + xStep * distance + distance - padding;
-                rectF.bottom = Y_INIT + yStep * distance + distance - padding;
+                rectF.bottom = Y_INIT + yStep * distance + distance - padding + maxHeightOfStaticLayout;
 
 //                Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
 //                        + "right " + rectF.right + "bottom " + rectF.bottom);

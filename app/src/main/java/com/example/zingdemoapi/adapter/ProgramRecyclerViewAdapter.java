@@ -16,6 +16,7 @@ import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.Program;
 import com.example.zingdemoapi.request.GlideRequest;
 import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
+import com.example.zingdemoapi.ui.view.ProgramItemCustomView;
 
 import java.util.List;
 
@@ -44,9 +45,8 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
 
     @Override
     public void onBindViewHolder(@NonNull TitleImageViewHolder viewHolder, final int i) {
-        viewHolder.childGridViewTitle.setText(list.get(i).getTitle());
-        GlideRequest.getInstance().loadImage(requestManager, list.get(i).getThumbnail(), viewHolder.childGridviewImage, R.drawable.default_thumbnail);
-        viewHolder.childGridviewImage.setOnClickListener(new View.OnClickListener() {
+        viewHolder.programItemCustomView.setImageAndTitle(list.get(i).getThumbnail(), list.get(i).getTitle());
+        viewHolder.programItemCustomView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProgramInfoActivity.class);
@@ -56,6 +56,17 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
                 context.startActivity(intent);
             }
         });
+        //        GlideRequest.getInstance().loadImage(requestManager, list.get(i).getThumbnail(), viewHolder.childGridviewImage, R.drawable.default_thumbnail);
+//        viewHolder.childGridviewImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, ProgramInfoActivity.class);
+//                intent.putExtra(Constant.TITLE, title);
+//                intent.putExtra(Constant.PROGRAMID, list.get(i).getId());
+//                //Toast.makeText(context, "ID: " + list.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                context.startActivity(intent);
+//            }
+//        });
     }
 
     @Override
@@ -67,13 +78,14 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
         }
     }
     public class TitleImageViewHolder extends RecyclerView.ViewHolder{
-        TextView childGridViewTitle;
-        ImageView childGridviewImage;
-
+//        TextView childGridViewTitle;
+//        ImageView childGridviewImage;
+        ProgramItemCustomView programItemCustomView;
         TitleImageViewHolder(View view) {
             super(view);
-            childGridViewTitle = view.findViewById(R.id.child_recycler_title);
-            childGridviewImage = view.findViewById(R.id.child_recycler_image);
+            programItemCustomView = view.findViewById(R.id.program_item_custom_view);
+//            childGridViewTitle = view.findViewById(R.id.child_recycler_title);
+//            childGridviewImage = view.findViewById(R.id.child_recycler_image);
         }
     }
 }

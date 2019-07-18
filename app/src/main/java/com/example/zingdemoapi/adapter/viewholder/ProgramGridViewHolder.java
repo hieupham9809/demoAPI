@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
-import com.example.zingdemoapi.adapter.ProgramGridViewAdapter;
+//import com.example.zingdemoapi.adapter.ProgramGridViewAdapter;
 import com.example.zingdemoapi.adapter.ProgramRecyclerViewAdapter;
 import com.example.zingdemoapi.datamodel.Program;
 import com.example.zingdemoapi.ui.view.ExpandableHeightGridView;
@@ -24,7 +24,7 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
     private RecyclerView recyclerView;
     private ProgramRecyclerViewAdapter programRecyclerViewAdapter;
     private Context context;
-    private ProgramGridViewAdapter programGridViewAdapter;
+//    private ProgramGridViewAdapter programGridViewAdapter;
     private TextView tvTypeTitle;
     public ProgramGridViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager) {
         super(itemView, mRequestManager);
