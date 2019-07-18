@@ -41,7 +41,6 @@ public class ProgramItemCustomView extends View  {
     StaticLayout titleStaticLayout;
 
     private int screenWidth;
-    private int screenHeight;
 
     private String title;
 
@@ -135,15 +134,17 @@ public class ProgramItemCustomView extends View  {
         super.onDraw(canvas);
         rectF.left = 0;
         rectF.top = 0;
-        titleStaticLayout
-                = new StaticLayout(
-                title
-                , textPaint
-                , getWidth()
-                , Layout.Alignment.ALIGN_CENTER
-                , 1.0f
-                , 0.0f
-                , false);
+        if (titleStaticLayout == null){
+            titleStaticLayout
+                    = new StaticLayout(
+                    title
+                    , textPaint
+                    , getWidth()
+                    , Layout.Alignment.ALIGN_CENTER
+                    , 1.0f
+                    , 0.0f
+                    , false);
+        }
         if (imageBitmap != null){
 
             rectF.right = getWidth();
@@ -152,6 +153,7 @@ public class ProgramItemCustomView extends View  {
             canvas.drawBitmap(imageBitmap, null, rectF, bitmapPaint);
 
         } else {
+
             rectF.right = getWidth();
             rectF.bottom = nullImageProgram.getHeight() * rectF.right / nullImageProgram.getWidth();
 
@@ -160,7 +162,9 @@ public class ProgramItemCustomView extends View  {
 
         canvas.save();
         canvas.translate(rectF.left, rectF.bottom + Constant.NAME_PROGRAM_TEXT_PADDING_HEIGHT);
+
         titleStaticLayout.draw(canvas);
+
         canvas.restore();
     }
 
