@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
 //    private ExpandableHeightGridView gridView;
-    private GridView gridView;
+//    private GridView gridView;
     private RecyclerView recyclerView;
     private ProgramRecyclerViewAdapter programRecyclerViewAdapter;
     private Context context;
@@ -48,10 +48,8 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
         @Override
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
             int action = e.getAction();
-            switch (action) {
-                case MotionEvent.ACTION_MOVE:
-                    rv.getParent().requestDisallowInterceptTouchEvent(true);
-                    break;
+            if (action == MotionEvent.ACTION_MOVE) {
+                rv.getParent().requestDisallowInterceptTouchEvent(true);
             }
             return false;
         }

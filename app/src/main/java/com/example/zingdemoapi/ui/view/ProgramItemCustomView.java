@@ -101,7 +101,7 @@ public class ProgramItemCustomView extends View  {
     }
     private void initBitmapPaint() {
         bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bitmapPaint.setColor(0XFF000000);
+        bitmapPaint.setColor(getResources().getColor(R.color.color_bitmap_paint));
 
     }
 
@@ -150,8 +150,7 @@ public class ProgramItemCustomView extends View  {
         }
 
         canvas.save();
-        canvas.translate(rectF.left, rectF.bottom + Constant.NAME_PROGRAM_TEXT_PADDING_HEIGHT);
-
+        canvas.translate(rectF.left, rectF.bottom + getResources().getDimension(R.dimen.name_program_text_padding_height));
         titleStaticLayout.draw(canvas);
 
         canvas.restore();
@@ -163,9 +162,9 @@ public class ProgramItemCustomView extends View  {
         int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
 
         if (imageBitmap != null && titleStaticLayout != null){
-            setMeasuredDimension(parentWidth, imageBitmap.getHeight() * parentWidth / imageBitmap.getWidth() + Constant.NAME_PROGRAM_TEXT_PADDING_HEIGHT + titleStaticLayout.getHeight());
+            setMeasuredDimension(parentWidth, imageBitmap.getHeight() * parentWidth / imageBitmap.getWidth() + Math.round(getResources().getDimension(R.dimen.name_program_text_padding_height))+ titleStaticLayout.getHeight());
         } else {
-            setMeasuredDimension(parentWidth, nullImageProgram.getHeight() * parentWidth / nullImageProgram.getWidth() + Constant.NAME_PROGRAM_TEXT_PADDING_HEIGHT);
+            setMeasuredDimension(parentWidth, nullImageProgram.getHeight() * parentWidth / nullImageProgram.getWidth() + Math.round(getResources().getDimension(R.dimen.name_program_text_padding_height)));
         }
     }
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="name_program_text_padding_height">6dp</dimen>
+    <dimen name="artist_padding_width">20dp</dimen>
+</resources>

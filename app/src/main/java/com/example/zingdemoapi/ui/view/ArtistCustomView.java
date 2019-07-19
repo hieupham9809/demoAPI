@@ -215,10 +215,10 @@ public class ArtistCustomView extends View {
                 int xStep = ((i + 1) % NUM_COLUMN_ARTIST == 0) ? (NUM_COLUMN_ARTIST - 1) : ((i + 1) % NUM_COLUMN_ARTIST - 1);
                 int yStep = ((i + 1) % NUM_COLUMN_ARTIST == 0) ? ((i + 1) / NUM_COLUMN_ARTIST - 1) : ((i + 1) / NUM_COLUMN_ARTIST);
 
-                rectF.left = X_INIT + xStep * distance + padding;
-                rectF.top = Y_INIT + yStep * distance + padding + maxHeightOfStaticLayout;
-                rectF.right = X_INIT + xStep * distance + distance - padding;
-                rectF.bottom = Y_INIT + yStep * distance + distance - padding + maxHeightOfStaticLayout;
+                rectF.left = X_INIT + xStep * distance + getResources().getDimension(R.dimen.artist_padding_width);
+                rectF.top = Y_INIT + yStep * distance + getResources().getDimension(R.dimen.artist_padding_width) + maxHeightOfStaticLayout;
+                rectF.right = X_INIT + xStep * distance + distance - getResources().getDimension(R.dimen.artist_padding_width);
+                rectF.bottom = Y_INIT + yStep * distance + distance - getResources().getDimension(R.dimen.artist_padding_width) + maxHeightOfStaticLayout;
 
 //                Log.d("ZingDemoApi", "left " + rectF.left + "top " + rectF.top
 //                        + "right " + rectF.right + "bottom " + rectF.bottom);
@@ -237,7 +237,7 @@ public class ArtistCustomView extends View {
                 canvas.save();
 
                 // calculate x and y position where your text will be placed
-                canvas.translate(rectF.left - padding , rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE);
+                canvas.translate(rectF.left - getResources().getDimension(R.dimen.artist_padding_width) , rectF.bottom + Constant.NAME_ARTIST_TEXT_SIZE);
                 mArtistNameStaticLayout.draw(canvas);
                 canvas.restore();
 

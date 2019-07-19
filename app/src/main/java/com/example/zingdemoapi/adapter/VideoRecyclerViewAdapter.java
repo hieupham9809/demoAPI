@@ -19,7 +19,6 @@ import java.util.List;
 
 public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecyclerViewAdapter.TitleImageViewHolder> {
     private List<Video> list;
-    private String title;
     private Context context;
 //    private LayoutInflater mLayoutInflater;
 //    private RequestManager requestManager;
