@@ -14,6 +14,7 @@ import com.example.zingdemoapi.R;
 //import com.example.zingdemoapi.adapter.ProgramGridViewAdapter;
 import com.example.zingdemoapi.adapter.ProgramRecyclerViewAdapter;
 import com.example.zingdemoapi.datamodel.Program;
+import com.example.zingdemoapi.request.CustomProgramOnClickListener;
 import com.example.zingdemoapi.ui.view.ExpandableHeightGridView;
 
 import java.util.List;
@@ -26,6 +27,13 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
     private Context context;
 //    private ProgramGridViewAdapter programGridViewAdapter;
     private TextView tvTypeTitle;
+
+    private CustomProgramOnClickListener customProgramOnClickListener;
+
+    public void setCustomProgramOnClickListener(CustomProgramOnClickListener customProgramOnClickListener) {
+        this.customProgramOnClickListener = customProgramOnClickListener;
+    }
+
     public ProgramGridViewHolder(@NonNull View itemView, Context mContext, RequestManager mRequestManager) {
         super(itemView, mRequestManager);
         context = mContext;
@@ -74,6 +82,14 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
 
         }
         programRecyclerViewAdapter.setProgramAndTitle(list, title);
+        programRecyclerViewAdapter.setCustomProgramOnClickListener(new CustomProgramOnClickListener() {
+            @Override
+            public void onClick(String title, int id) {
+                if (customProgramOnClickListener != null){
+                    customProgramOnClickListener.onClick(title, id);
+                }
+            }
+        });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(programRecyclerViewAdapter);

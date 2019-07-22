@@ -20,6 +20,7 @@ import com.example.zingdemoapi.adapter.viewholder.BannerBoxViewHolder;
 import com.example.zingdemoapi.adapter.viewholder.BaseHomeViewHolder;
 import com.example.zingdemoapi.adapter.viewholder.ProgramGridViewHolder;
 import com.example.zingdemoapi.adapter.viewholder.VideoViewHolder;
+import com.example.zingdemoapi.request.CustomProgramOnClickListener;
 
 import java.util.List;
 
@@ -31,6 +32,12 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
     private Home homedata;
     private RequestManager requestManager;
     private Context context; // Activity/Fragment 's context
+
+    private CustomProgramOnClickListener customProgramOnClickListener;
+
+    public void setCustomProgramOnClickListener(CustomProgramOnClickListener customProgramOnClickListener) {
+        this.customProgramOnClickListener = customProgramOnClickListener;
+    }
 
     public DataAdapter(Home home, Context mContext, RequestManager mRequestManager, CompositeDisposable mCompositeDisposable) {
         homedata = home;
@@ -48,7 +55,16 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
             return new BannerBoxViewHolder(view, context, requestManager);
         } else if (viewType == Type.PROGRAM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.program_recycler_row, parent, false);
-            return new ProgramGridViewHolder(view, context, requestManager);
+            ProgramGridViewHolder programGridViewHolder = new ProgramGridViewHolder(view, context, requestManager);
+            programGridViewHolder.setCustomProgramOnClickListener(new CustomProgramOnClickListener() {
+                @Override
+                public void onClick(String title, int id) {
+                    if (customProgramOnClickListener != null){
+                        customProgramOnClickListener.onClick(title, id);
+                    }
+                }
+            });
+            return programGridViewHolder;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.program_recycler_row, parent, false);
             return new VideoViewHolder(view, context, requestManager);

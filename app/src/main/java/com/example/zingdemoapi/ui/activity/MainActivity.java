@@ -1,5 +1,6 @@
 package com.example.zingdemoapi.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
+import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.Home;
+import com.example.zingdemoapi.datamodel.ProgramInfo;
+import com.example.zingdemoapi.request.CustomProgramOnClickListener;
 import com.example.zingdemoapi.request.RestApi;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,6 +30,12 @@ public class MainActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private RequestManager requestManager;
+
+    private CustomProgramOnClickListener customProgramOnClickListener;
+
+    public void setCustomProgramOnClickListener(CustomProgramOnClickListener customProgramOnClickListener) {
+        this.customProgramOnClickListener = customProgramOnClickListener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +84,15 @@ public class MainActivity extends BaseActivity {
 
     private void setAdapterForHomeRecyclerView(Home home) {
         DataAdapter mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
+        mAdapter.setCustomProgramOnClickListener(new CustomProgramOnClickListener() {
+            @Override
+            public void onClick(String title, int id) {
+                Intent intent = new Intent(MainActivity.this, ProgramInfoActivity.class);
+                intent.putExtra(Constant.TITLE, title);
+                intent.putExtra(Constant.PROGRAMID, id);
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         Log.d("ZingDemoApi", "GET RESPONSE" + home.size());
