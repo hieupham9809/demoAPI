@@ -58,9 +58,9 @@ public class DataAdapter extends RecyclerView.Adapter<BaseHomeViewHolder> {
             ProgramGridViewHolder programGridViewHolder = new ProgramGridViewHolder(view, context, requestManager);
             programGridViewHolder.setCustomProgramOnClickListener(new CustomProgramOnClickListener() {
                 @Override
-                public void onClick(String title, int id) {
+                public void onClick(Program program) {
                     if (customProgramOnClickListener != null){
-                        customProgramOnClickListener.onClick(title, id);
+                        customProgramOnClickListener.onClick(program);
                     }
                 }
             });

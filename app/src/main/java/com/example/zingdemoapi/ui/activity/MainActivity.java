@@ -14,6 +14,7 @@ import com.example.zingdemoapi.R;
 import com.example.zingdemoapi.adapter.DataAdapter;
 import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.datamodel.Home;
+import com.example.zingdemoapi.datamodel.Program;
 import com.example.zingdemoapi.datamodel.ProgramInfo;
 import com.example.zingdemoapi.request.CustomProgramOnClickListener;
 import com.example.zingdemoapi.request.RestApi;
@@ -30,12 +31,6 @@ public class MainActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private RequestManager requestManager;
-
-    private CustomProgramOnClickListener customProgramOnClickListener;
-
-    public void setCustomProgramOnClickListener(CustomProgramOnClickListener customProgramOnClickListener) {
-        this.customProgramOnClickListener = customProgramOnClickListener;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +81,10 @@ public class MainActivity extends BaseActivity {
         DataAdapter mAdapter = new DataAdapter(home, this, requestManager, compositeDisposable);
         mAdapter.setCustomProgramOnClickListener(new CustomProgramOnClickListener() {
             @Override
-            public void onClick(String title, int id) {
+            public void onClick(Program program) {
                 Intent intent = new Intent(MainActivity.this, ProgramInfoActivity.class);
-                intent.putExtra(Constant.TITLE, title);
-                intent.putExtra(Constant.PROGRAMID, id);
+                intent.putExtra(Constant.TITLE, program.getTitle());
+                intent.putExtra(Constant.PROGRAMID, program.getId());
                 startActivity(intent);
             }
         });

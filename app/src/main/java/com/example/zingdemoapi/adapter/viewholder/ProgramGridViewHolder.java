@@ -84,9 +84,9 @@ public class ProgramGridViewHolder extends BaseHomeViewHolder<Program> {
         programRecyclerViewAdapter.setProgramAndTitle(list, title);
         programRecyclerViewAdapter.setCustomProgramOnClickListener(new CustomProgramOnClickListener() {
             @Override
-            public void onClick(String title, int id) {
+            public void onClick(Program program) {
                 if (customProgramOnClickListener != null){
-                    customProgramOnClickListener.onClick(title, id);
+                    customProgramOnClickListener.onClick(program);
                 }
             }
         });

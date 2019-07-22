@@ -48,40 +48,33 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
     @Override
     public TitleImageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.program_recycler_item, viewGroup, false);
-        return new TitleImageViewHolder(view, this);
+        return new TitleImageViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TitleImageViewHolder viewHolder, int i) {
         viewHolder.programItemCustomView.setImageAndTitle(list.get(i).getThumbnail(), list.get(i).getTitle());
-        viewHolder.itemView.setTag(list.get(i).getId());
+        viewHolder.itemView.setTag(list.get(i));
 
     }
 
 
-    public static class TitleImageViewHolder extends RecyclerView.ViewHolder{
-//        TextView childGridViewTitle;
-//        ImageView childGridviewImage;
-        ProgramRecyclerViewAdapter mInstance;
+    class TitleImageViewHolder extends RecyclerView.ViewHolder{
+
         ProgramItemCustomView programItemCustomView;
-        TitleImageViewHolder(View view, ProgramRecyclerViewAdapter instance) {
+        TitleImageViewHolder(View view) {
             super(view);
-            mInstance = instance;
             programItemCustomView = view.findViewById(R.id.program_item_custom_view);
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(mInstance.context, ProgramInfoActivity.class);
-//                    intent.putExtra(Constant.TITLE, mInstance.title);
-//                    intent.putExtra(Constant.PROGRAMID, (int)v.getTag());
-//                    mInstance.context.startActivity(intent);
-                    if (mInstance.customProgramOnClickListener != null){
-                        mInstance.customProgramOnClickListener.onClick(mInstance.title, (int)v.getTag());
+
+                    if (customProgramOnClickListener != null){
+                        customProgramOnClickListener.onClick((Program)v.getTag());
                     }
                 }
             });
-//            childGridViewTitle = view.findViewById(R.id.child_recycler_title);
-//            childGridviewImage = view.findViewById(R.id.child_recycler_image);
+
         }
     }
     @Override
