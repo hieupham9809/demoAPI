@@ -43,6 +43,9 @@ public class RestApi {
     public Observable<ProgramInfo> getProgramInfo(int programId) {
         return requestInterface.getProgramInfo(programId);
     }
+    public Observable<ProgramInfo> getProgramInfo(String programName) {
+        return requestInterface.getProgramInfo(programName);
+    }
     public Observable<DataComment> getDataComment(int programId, int page){
         return requestInterface.getDataComment(programId, page);
     }

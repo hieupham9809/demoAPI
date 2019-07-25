@@ -23,7 +23,6 @@ import java.util.List;
 
 public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecyclerViewAdapter.TitleImageViewHolder> {
     private  List<Program> list;
-    private  String title;
     private  Context context;
 
     private CustomProgramOnClickListener customProgramOnClickListener;
@@ -40,7 +39,6 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
     }
     public void setProgramAndTitle(List<Program> mList, String mTitle ) {
         list = mList;
-        title = mTitle;
 //        mLayoutInflater = LayoutInflater.from(context);
     }
 

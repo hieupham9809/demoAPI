@@ -1,6 +1,7 @@
 package com.example.zingdemoapi.ui.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,11 +12,14 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
@@ -47,29 +51,35 @@ public class ArtistCustomView extends View {
     private Context context;
     private final float X_INIT = 0.0f;
     private final float Y_INIT = 0.0f;
-
+    private float distance;
     RectF rectF = new RectF();
 
     public void mInvalidate() {
         this.invalidate();
     }
 
-    public void setArtistList(final List<Artist> artistList) {
-        this.artistList = artistList;
+    public void setArtistList(List<Artist> martistList) {
+        this.artistList = martistList;
         bitmaps = new Bitmap[artistList.size()];
+
+
         nullArtist = getRoundedBitmap(
                 BitmapFactory.decodeResource(getResources(), R.drawable.null_artist)
                 , 1000);
         staticLayouts = new StaticLayout[artistList.size()];
+
         for (int i = 0; i < artistList.size(); i++) {
             final int j = i;
+
             staticLayouts[j] = new StaticLayout(artistList.get(j).getName()
                     , textPaint
-                    , Math.round(getWidth() * 1.0f / NUM_COLUMN_ARTIST)
+                    , Math.round(Resources.getSystem().getDisplayMetrics().widthPixels * 1.0f / NUM_COLUMN_ARTIST)
                     , Layout.Alignment.ALIGN_CENTER
                     , 1.0f
                     , 0.0f
                     , false);
+            Log.d("ZingDemoApi", " height width " + getWidth() + " "+staticLayouts[j].getHeight() + " " + staticLayouts[j].getWidth());
+
             Glide.with(context)
                     .asBitmap()
                     .load(artistList.get(i).getAvatar())
@@ -79,21 +89,34 @@ public class ArtistCustomView extends View {
                                   public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Bitmap> target, boolean b) {
                                       //Toast.makeText(context,"error",Toast.LENGTH_SHORT).show();
                                       bitmaps[j] = getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.error_load_image), 1000);
-                                      ((ProgramInfoActivity) context).runOnUiThread(new Runnable() {
-
+//                                      ((ProgramInfoActivity) context).runOnUiThread(new Runnable() {
+//
+//                                          @Override
+//                                          public void run() {
+//                                              mInvalidate();
+//                                          }
+//                                      });
+                                      new Handler(Looper.getMainLooper()).post(new Runnable() {
                                           @Override
                                           public void run() {
                                               mInvalidate();
                                           }
                                       });
+
                                       return false;
                                   }
 
                                   @Override
                                   public boolean onResourceReady(Bitmap resource, Object o, Target<Bitmap> target, DataSource dataSource, boolean b) {
                                       bitmaps[j] = getRoundedBitmap(resource, 1000);
-                                      ((ProgramInfoActivity) context).runOnUiThread(new Runnable() {
-
+//                                      ((ProgramInfoActivity) context).runOnUiThread(new Runnable() {
+//
+//                                          @Override
+//                                          public void run() {
+//                                              mInvalidate();
+//                                          }
+//                                      });
+                                      new Handler(Looper.getMainLooper()).post(new Runnable() {
                                           @Override
                                           public void run() {
                                               mInvalidate();
@@ -108,6 +131,7 @@ public class ArtistCustomView extends View {
 
         }
         maxHeightOfStaticLayout = findMaxHeightOfStaticLayout(staticLayouts);
+
         requestLayout();
 
     }
@@ -192,11 +216,11 @@ public class ArtistCustomView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (artistList != null) {
-            float distance = getWidth() * 1.0f / NUM_COLUMN_ARTIST;
+            distance = Resources.getSystem().getDisplayMetrics().widthPixels * 1.0f / NUM_COLUMN_ARTIST;
             int rows = (artistList.size() % NUM_COLUMN_ARTIST == 0) ? (artistList.size() / NUM_COLUMN_ARTIST) : (artistList.size() / NUM_COLUMN_ARTIST + 1);
             setMeasuredDimension(getWidth(), rows * (Math.round(distance) + maxHeightOfStaticLayout) + maxHeightOfStaticLayout);
             //super.onMeasure(getWidth(), rows * Math.round(distance));
-            //Log.d("ZingDemoApi", "distance " + distance);
+           // Log.d("ZingDemoApi", "distance onmeasure " + widthMeasureSpec);
 
         }
     }
@@ -204,7 +228,7 @@ public class ArtistCustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float distance = getWidth() * 1.0f / NUM_COLUMN_ARTIST;
+        distance = getWidth() * 1.0f / NUM_COLUMN_ARTIST;
         int padding = 50;
 
         if (bitmaps != null) {
@@ -234,6 +258,7 @@ public class ArtistCustomView extends View {
                 //canvas.drawBitmap(bitmapList.get(i), null, rectF, paint);
 
                 StaticLayout mArtistNameStaticLayout = staticLayouts[i];
+
                 canvas.save();
 
                 // calculate x and y position where your text will be placed
