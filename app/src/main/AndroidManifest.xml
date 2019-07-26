@@ -35,6 +35,11 @@
             >
 
         </provider>
+        <service android:name=".services.ProgramRequestService"
+            android:exported="true"
+            android:enabled="true">
+
+        </service>
     </application>
 
 </manifest>

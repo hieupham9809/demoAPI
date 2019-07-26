@@ -16,8 +16,9 @@
     <string name="avatar">user_avatar</string>
     <string name="title_comment_activity">Bình luận của</string>
     <string name="app_tag">ZingDemoApi</string>
-    <string name="error_message">Error:</string>
+    <string name="error_message">Errorss:   </string>
     <string name="comment_complete_message">Completed load comment API</string>
     <string name="programinfo_complete_message">Completed ProgramInfoActivity API</string>
     <string name="end_comment">Không còn bình luận nào khác</string>
+    <string name="programinfo_service_complete_message">service api loaded completely</string>
 </resources>

@@ -1,9 +1,12 @@
 package com.example.zingdemoapi.datamodel;
 
+import android.content.ComponentName;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -11,14 +14,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.zingdemoapi.services.ProgramRequestService;
+import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
 import java.util.HashMap;
 
 public class ProgramContentProvider extends ContentProvider {
     static final UriMatcher uriMatcher;
-
+    private Context context;
+    private ProgramRequestService programRequestService;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(Constant.PROVIDER_NAME, Constant.PROGRAMS_TABLE_NAME, Constant.PROGRAMS);
@@ -131,9 +139,10 @@ public class ProgramContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        Context context = getContext();
+        context = getContext();
         ProgramDatabaseHelper programDatabaseHelper = new ProgramDatabaseHelper(context);
-
+        Intent intent = new Intent(context, ProgramRequestService.class);
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         database = programDatabaseHelper.getWritableDatabase();
         return (database != null);
     }
@@ -184,9 +193,15 @@ public class ProgramContentProvider extends ContentProvider {
                 if (cursor == null){
                     Log.d("ZingDemoApi", "error in null cursor");
                 } else if (cursor.getCount() < 1){
-                    // has not in database
+                    // has not in database, get request service and then insert to database
+                    Log.d("ZingDemoApi", "data has not existed in database, get request api!");
 
+                    programRequestService.requestAndInsertProgramInfo(selectionArgs[0]);
+                    Log.d("ZingDemoApi", "query database again and return");
+                    return qb.query(database, projection, Constant.NAME + " LIKE ? ", new String[]{"%" + selectionArgs[0] + "%"}, null, null, null);
                 } else {
+                    Log.d("ZingDemoApi", "data existed in database, show on screen");
+
                     return cursor;
                 }
 
@@ -332,4 +347,17 @@ public class ProgramContentProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ProgramRequestService.LocalBinder binder = (ProgramRequestService.LocalBinder) service;
+            programRequestService = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 }

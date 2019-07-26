@@ -160,7 +160,7 @@ public class ProgramInfoActivity extends BaseActivity {
 //        fetchProgramInLocal();
         //artistCustomView.mInvalidate();
     }
-    private void storeProgramInLocal(ProgramInfo response){
+    public void storeProgramInLocal(ProgramInfo response){
         Uri uri;
 //      INSERT TO PROGRAM TABLE
         ContentValues values = new ContentValues();
@@ -296,7 +296,7 @@ public class ProgramInfoActivity extends BaseActivity {
             serieCursor = getContentResolver().query(Constant.CONTENT_URI_SERIE, null, selectionClause, null, null);
 
             if (serieCursor != null && serieCursor.moveToFirst()) {
-                Log.d("ZingDemoApi", serieCursor.getColumnNames()[0] + " " + serieCursor.getColumnNames()[3]);
+//                Log.d("ZingDemoApi", serieCursor.getColumnNames()[0] + " " + serieCursor.getColumnNames()[3]);
                 do {
                     Serie serie = new Serie();
                     serie.setId(serieCursor.getInt(serieCursor.getColumnIndex(Constant.ID_SERIE)));

@@ -78,7 +78,6 @@ public class ArtistCustomView extends View {
                     , 1.0f
                     , 0.0f
                     , false);
-            Log.d("ZingDemoApi", " height width " + getWidth() + " "+staticLayouts[j].getHeight() + " " + staticLayouts[j].getWidth());
 
             Glide.with(context)
                     .asBitmap()
