@@ -37,10 +37,13 @@ import com.example.zingdemoapi.ui.view.ArtistCustomView;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class ProgramInfoActivity extends BaseActivity {
@@ -249,6 +252,7 @@ public class ProgramInfoActivity extends BaseActivity {
     }
 
     private ProgramInfo fetchProgramInLocal(){
+        Log.d("ZingDemoApi", "fetchProgramInLocal at "+ Thread.currentThread().getName());
         String URL = "content://" + Constant.PROVIDER_NAME+"/programs/"+mProgramId ;
         Uri programs = Uri.parse(URL);
         Cursor serieCursor;
@@ -258,6 +262,7 @@ public class ProgramInfoActivity extends BaseActivity {
         Cursor genreCursor;
         Cursor cursor;
         cursor = getContentResolver().query(programs, null, null, null, "name");
+
         if (cursor != null && cursor.moveToFirst()) {
 //        Log.d("ZingDemoApi", cursor.getInt(cursor.getColumnIndex(Constant.ID)) + " " + cursor.getColumnNames()[3]);
 
@@ -284,17 +289,18 @@ public class ProgramInfoActivity extends BaseActivity {
             programInfo.setBanner(cursor.getString(cursor.getColumnIndex(Constant.BANNER)));
             programInfo.setCreatedDate(cursor.getInt(cursor.getColumnIndex(Constant.CREATED_DATE)));
             programInfo.setModifiedDate(cursor.getInt(cursor.getColumnIndex(Constant.MODIFIED_DATE)));
+            Log.d("ZingDemoApi", "HERE");
 
-            Toast.makeText(getBaseContext(),
+            Log.d("ZingDemoApi",
                     cursor.getString(cursor.getColumnIndex(Constant.NAME)) +
-                            ", " + cursor.getString(cursor.getColumnIndex(Constant.ID)), Toast.LENGTH_LONG).show();
+                            ", " + cursor.getString(cursor.getColumnIndex(Constant.ID)));
+
             cursor.close();
 
 //              QUERY SERIES TABLE
             List<Serie> serieList = new ArrayList<>();
             String selectionClause = Constant.ID + "=" + programInfo.getId();
             serieCursor = getContentResolver().query(Constant.CONTENT_URI_SERIE, null, selectionClause, null, null);
-
             if (serieCursor != null && serieCursor.moveToFirst()) {
 //                Log.d("ZingDemoApi", serieCursor.getColumnNames()[0] + " " + serieCursor.getColumnNames()[3]);
                 do {
@@ -383,21 +389,64 @@ public class ProgramInfoActivity extends BaseActivity {
     }
 
     private void loadProgramInfo(int programId) {
-        if (isNetworkAvailable()) {
+
             subscribe(RestApi.getInstance().getProgramInfo(programId)
+                            .observeOn(Schedulers.newThread())
+                            .doOnNext(new Consumer<ProgramInfo>() {
+                                @Override
+                                public void accept(ProgramInfo programInfo) throws Exception {
+                                    Log.d("ZingDemoApi", "store Program in Local"+ Thread.currentThread());
+                                    storeProgramInLocal(programInfo);
+                                }
+                            })
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io())
                     , new Consumer<ProgramInfo>() {
                         @Override
                         public void accept(ProgramInfo response) throws Exception {
+                            Log.d("ZingDemoApi", "set Info "+ Thread.currentThread().getName());
                             setProgramInfoDataForView(response);
-                            storeProgramInLocal(response);
+                            //storeProgramInLocal(response);
                         }
                     }
                     , new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable error) throws Exception {
-                            Log.d(getString(R.string.app_tag), getString(R.string.error_message) + error.getLocalizedMessage());
+                            Log.d(getString(R.string.app_tag), getString(R.string.error_message) + error.getLocalizedMessage() + " " + Thread.currentThread());
+                            Observable.just(1)
+                                    .subscribeOn(Schedulers.newThread())
+                                    .flatMap(new Function<Integer, ObservableSource<ProgramInfo>>() {
+                                        @Override
+                                        public ObservableSource<ProgramInfo> apply(Integer integer) throws Exception {
+                                            ProgramInfo programInfo = fetchProgramInLocal();
+                                            Log.d("ZingDemoApi", "fetched");
+
+                                            return Observable.just(programInfo);
+                                        }
+                                    })
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                            new Consumer<ProgramInfo>() {
+                                                @Override
+                                                public void accept(ProgramInfo response) throws Exception {
+                                                    setProgramInfoDataForView(response);
+
+                                                }
+                                            }
+                                            , new Consumer<Throwable>() {
+                                                @Override
+                                                public void accept(Throwable throwable) throws Exception {
+                                                    Log.d("ZingDemoApi", "some error with fetchLocal line 433");
+                                                }
+                                            }
+                                            , new Action() {
+                                                @Override
+                                                public void run() throws Exception {
+                                                    Log.d("ZingDemoApi", "Fetch local and set view complete");
+                                                }
+                                            }
+                                    );
+                            //setProgramInfoDataForView(fetchProgramInLocal());
 
                         }
                     }
@@ -407,9 +456,8 @@ public class ProgramInfoActivity extends BaseActivity {
                             Log.d(getString(R.string.app_tag), getString(R.string.programinfo_complete_message));
                         }
                     });
-        } else {
-            setProgramInfoDataForView(fetchProgramInLocal());
-        }
+
+
     }
 
 
