@@ -29,8 +29,8 @@
 
         </activity>
         <provider
-            android:authorities="com.example.zingdemoapi.datamodel.ProgramContentProvider"
-            android:name=".datamodel.ProgramContentProvider"
+            android:authorities="com.example.zingdemoapi.database.ProgramContentProvider"
+            android:name=".database.ProgramContentProvider"
             android:exported="true"
             >
 

@@ -1,4 +1,4 @@
-package com.example.zingdemoapi.datamodel;
+package com.example.zingdemoapi.database;
 
 import android.content.ComponentName;
 import android.content.ContentProvider;
@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.zingdemoapi.datamodel.Constant;
 import com.example.zingdemoapi.services.ProgramRequestService;
 import com.example.zingdemoapi.ui.activity.ProgramInfoActivity;
 
@@ -27,6 +28,7 @@ public class ProgramContentProvider extends ContentProvider {
     static final UriMatcher uriMatcher;
     private Context context;
     private ProgramRequestService programRequestService;
+    ProgramDatabaseHelper programDatabaseHelper;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(Constant.PROVIDER_NAME, Constant.PROGRAMS_TABLE_NAME, Constant.PROGRAMS);
@@ -46,7 +48,7 @@ public class ProgramContentProvider extends ContentProvider {
     *
     * */
 
-    private SQLiteDatabase database;
+//    private SQLiteDatabase database;
     private static HashMap<String, String> PROGRAMS_PROJECTION_MAP;
     private static final String CREATE_DB_PROGRAM_TABLE =
             " CREATE TABLE " + Constant.PROGRAMS_TABLE_NAME +
@@ -140,11 +142,12 @@ public class ProgramContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         context = getContext();
-        ProgramDatabaseHelper programDatabaseHelper = new ProgramDatabaseHelper(context);
+        programDatabaseHelper = new ProgramDatabaseHelper(context);
         Intent intent = new Intent(context, ProgramRequestService.class);
         context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        database = programDatabaseHelper.getWritableDatabase();
-        return (database != null);
+//        SQLiteDatabase database = programDatabaseHelper.getWritableDatabase();
+//          DO NOT CREATE database at onCreate
+        return true;
     }
 
     
@@ -152,6 +155,8 @@ public class ProgramContentProvider extends ContentProvider {
     public Cursor query( Uri uri,  String[] projection,  String selection,  String[] selectionArgs,  String sortOrder) {
 //        database.execSQL("DROP TABLE IF EXISTS " + Constant.PROGRAMS_TABLE_NAME);
 //        database.execSQL(CREATE_DB_PROGRAM_TABLE);
+        SQLiteDatabase database = programDatabaseHelper.getWritableDatabase();
+
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         switch (uriMatcher.match(uri)){
             case Constant.PROGRAMS:
@@ -237,6 +242,7 @@ public class ProgramContentProvider extends ContentProvider {
     @Override
     public Uri insert( Uri uri,  ContentValues values) {
         Uri _uri = null;
+        SQLiteDatabase database = programDatabaseHelper.getWritableDatabase();
 
         switch(uriMatcher.match(uri)){
             case Constant.PROGRAMS:
@@ -308,6 +314,8 @@ public class ProgramContentProvider extends ContentProvider {
     @Override
     public int delete( Uri uri,  String selection,  String[] selectionArgs) {
         int count = 0;
+        SQLiteDatabase database = programDatabaseHelper.getWritableDatabase();
+
         switch (uriMatcher.match(uri)){
             case Constant.PROGRAMS:
                 count = database.delete(Constant.PROGRAMS_TABLE_NAME, selection, selectionArgs);
@@ -329,6 +337,8 @@ public class ProgramContentProvider extends ContentProvider {
     @Override
     public int update( Uri uri,  ContentValues values,  String selection,  String[] selectionArgs) {
         int count = 0;
+        SQLiteDatabase database = programDatabaseHelper.getWritableDatabase();
+
         switch (uriMatcher.match(uri)){
             case Constant.PROGRAMS:
                 count = database.update(Constant.PROGRAMS_TABLE_NAME, values, selection, selectionArgs);
@@ -347,7 +357,11 @@ public class ProgramContentProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
     }
-
+    @Override
+    public void shutdown(){
+//        MUST close Helper on shutdown()
+        programDatabaseHelper.close();
+    }
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

@@ -23,7 +23,7 @@ public class Constant {
     public static final int MAX_LENGTH_FOR_ARTIST_NAME = 18;
     public static final int MAX_LENGTH_FOR_PADDING_TEXT = 12;
 
-    public static final String PROVIDER_NAME = "com.example.zingdemoapi.datamodel.ProgramContentProvider";
+    public static final String PROVIDER_NAME = "com.example.zingdemoapi.database.ProgramContentProvider";
 
     //
     public static final String ROOT_URI = "content://";

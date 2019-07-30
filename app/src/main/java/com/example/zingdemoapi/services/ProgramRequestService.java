@@ -57,6 +57,7 @@ public class ProgramRequestService extends Service {
                                         if (response != null) {
                                             Log.d("ZingDemoApi", "get response, inserting to database");
 
+
                                             insertToDatabase(response);
                                         } else {
                                             Log.d("ZingDemoApi", "response null");
